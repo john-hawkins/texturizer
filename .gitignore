@@ -1,0 +1,5 @@
+uploads/*
+data/*.csv
+uploads/*
+data/*.csv
+.DS_store
