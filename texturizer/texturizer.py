@@ -3,15 +3,14 @@
 """ texturizer.texturizer: provides entry point main()."""
  
 __version__ = "0.1.0"
-
+from io import StringIO
 import numpy as np
 import pandas as pd
 import sys
 import os
 
-from .simple import summarize_text
-#from .comparison import compare_fields
-#from .embedding import semantic_similarity
+from .simple import add_text_summary_features
+from .comparison import add_comparison_features
 from .config import max_filesize
  
 def main():
@@ -21,7 +20,7 @@ def main():
         exit(1)
     else:
         params = get_cmd_line_params(sys.argv)
-        print(params)
+        #print(params)
 
         if not os.path.exists(params["dataset"]):
             print("ERROR: Dataset does not exist")
@@ -29,10 +28,21 @@ def main():
             exit(1)
         filesize = os.stat(params["dataset"]).st_size
         if filesize<max_filesize:
-            print("Undersize data")
+            df = pd.read_csv( params["dataset"], low_memory=False )
+            simple = add_text_summary_features( df, params["columns"] )
+            if params["comparison"] :
+                simple = add_comparison_features( simple, params["columns"] )
+            print_output( simple )
         else:
             print("Oversize data")
 
+
+#############################################################
+def print_output(df):
+    output = StringIO()
+    df.to_csv(output,index=False)
+    print(output.getvalue())
+ 
 #############################################################
 def get_cmd_line_params(argv):
     """ parse out the option from an array of command line arguments """

@@ -32,15 +32,13 @@ You can use this application multiple ways
 Use the runner:
 
 ```
-./texturizer-runner.py markdown data/test.csv > markdown_test.md
+./texturizer-runner.py -columns=question,answer data/test.csv > data/output.csv
 ```
-
-Which was used to generate the markdown [output test file](markdown_test.md)
 
 Invoke the directory as a package:
 
 ```
-python -m texturizer markdown data/test.csv
+python -m texturizer -columns=question,answer data/test.csv
 ```
 
 Or simply install the package and use the command line application directly
@@ -62,7 +60,7 @@ pip install texturizer
 Now, the ``texturizer`` command is available::
 
 ```
-texturizer data/test.csv > data/output.csv
+texturizer -columns=question,answer data/test.csv > data/output.csv
 ```
 
 This will produce take the [Input CSV](data/test.csv), add simple summary columns and 
