@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
-
-#from nltk.corpus import stopwords
 import pandas as pd 
 import numpy as np
 import math
 import os
 
-#stop_word_list = stopwords.words('english')
-stop_word_list = ['a', 'it', 'is', 'the', 'are', 'he', 'she', 'they', 'him', 'her']
+stop_word_list = ["a","able","about","across","after","all","almost","also","am","among","an","and","any","are","as","at","be","because","been","but","by","can","cannot","could","dear","did","do","does","either","else","ever","every","for","from","get","got","had","has","have","he","her","hers","him","his","how","however","i","if","in","into","is","it","its","just","least","let","like","likely","may","me","might","most","must","my","neither","no","nor","not","of","off","often","on","only","or","other","our","own","rather","said","say","says","she","should","since","so","some","than","that","the","their","them","then","there","these","they","this","tis","to","too","twas","us","wants","was","we","were","what","when","where","which","while","who","whom","why","will","with","would","yet","you","your"]
 
 """
     texturizer.simple: Basic text feature calculation
-"""
+    Calculate statistics such as the average length of words, max word length
+    proportion of non stop-words.
 
+    Stop-word list taken from: https://www.textfixer.com/tutorials/common-english-words.txt 
+
+"""
 
 ########################################################################################
 def add_text_summary_features(df, columns):
@@ -21,8 +22,6 @@ def add_text_summary_features(df, columns):
         calculate the simple text summary features and add them.
     """
     rez = df.copy()
-    if len(columns) == 0:
-        columns = get_text_column_names(df)
     for col in columns:
         rez = add_text_features(rez, col)
     return rez
@@ -64,8 +63,5 @@ def null_tolerant_len(x):
     else:
         return len(x)
 
-########################################################################################
-def get_text_column_names(df):
-    rez = []
-    return rez
  
+########################################################################################

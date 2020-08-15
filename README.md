@@ -2,10 +2,13 @@ texturizer
 ----------
 
 ```
-Status - Incomplete
+Status - Initial Working Version
+
+TODO: Build functionality to process large datasets in chunks.
 ```
 
-This is an application to add text based features to a dataset.
+This is an application to add features to a dataset that are derived from analysis of
+the content of existing columns of text data.
 
 It will accept a CSV, TSV or XLS file and output an extended version of
 the dataset with additional columns appended. When run with default settings
@@ -18,9 +21,8 @@ Built using the
 [bootstrap cmdline template](https://github.com/jgehrcke/python-cmdline-bootstrap)
  by [jgehrcke](https://github.com/jgehrcke)
 
-### TODO
 
-### Resources
+### Resources & Dependencies
 
 I will be using a combination of [spacy](https://spacy.io/usage/spacy-101) and NLTK
 
@@ -66,5 +68,6 @@ texturizer -columns=question,answer data/test.csv > data/output.csv
 This will produce take the [Input CSV](data/test.csv), add simple summary columns and 
 produce the [Output CSV](data/output.csv)
 
-For more complicated NLP derived features see the additional options.
+For more complicated features see the additional options.
+
 

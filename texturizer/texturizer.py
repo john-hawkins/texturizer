@@ -10,6 +10,10 @@ import sys
 import os
 
 from .simple import add_text_summary_features
+from .topics import add_text_topics_features
+from .profanity import add_text_profanity_features
+from .literacy import add_text_literacy_features
+from .emoticons import add_text_emoticon_features
 from .comparison import add_comparison_features
 from .config import max_filesize
  
@@ -32,6 +36,14 @@ def main():
             simple = add_text_summary_features( df, params["columns"] )
             if params["comparison"] :
                 simple = add_comparison_features( simple, params["columns"] )
+            if params["profanity"] :
+                simple = add_text_profanity_features( simple, params["columns"] )
+            if params["emoticons"] :
+                simple = add_text_emoticon_features( simple, params["columns"] )
+            if params["topics"] :
+                simple = add_text_topics_features( simple, params["columns"] )
+            if params["literacy"] :
+                simple = add_text_literacy_features( simple, params["columns"] )
             print_output( simple )
         else:
             print("Oversize data")
@@ -51,14 +63,26 @@ def get_cmd_line_params(argv):
     result = {"dataset":data,
               "columns":[], 
               "profanity":False, 
+              "emoticons":False, 
+              "topics":False, 
+              "literacy":False, 
               "comparison":False, 
               "embedding":False
     }
     for o in options:
         parts = o.split("=")
+        if parts[0] == "-literacy":
+            if parts[1] == 'True':
+                result["literacy"]=True
         if parts[0] == "-profanity":
             if parts[1] == 'True':
                 result["profanity"]=True
+        if parts[0] == "-topics":
+            if parts[1] == 'True':
+                result["topics"]=True
+        if parts[0] == "-emoticons":
+            if parts[1] == 'True':
+                result["emoticons"]=True
         if parts[0] == "-embedding":
             if parts[1] == 'True':
                 result["embedding"]=True
@@ -79,7 +103,10 @@ def print_usage(args):
     print("  <PATH TO DATASET> - Supported file types: csv, tsv, xls, xlsx, odf")
     print(" [ARGS] ")
     print("  -columns=<COMMA SEPARATED LIST>. Default: apply to all string columns.")
+    print("  -topics=<True or False>. Default: False. Add counts of words from common topics.")
+    print("  -literacy=<True or False>. Default: False. Add checks for common literacy markers.")
     print("  -profanity=<True or False>. Default: False. Add profanity check flags.")
+    print("  -emoticons=<True or False>. Default: False. Add emoticon check flags.")
     print("  -comparison=<True or False>. Default: False. Add cross field comparisons.")
     print("")
 

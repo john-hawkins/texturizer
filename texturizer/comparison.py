@@ -6,6 +6,13 @@ import pandas as pd
 
 #################################################################################
 def add_comparison_features(df,columns):
+    """
+        This is the entry point to add all the core text similarity features.
+        Note: We left out Ratcliff Obershelp from the set of metrics because it
+        takes close to an order of magnitude longer to compute.
+
+        Initial version just includes 4 string edit distance metrics. 
+    """
     return add_string_match_features(df,columns)
 
 #################################################################################
