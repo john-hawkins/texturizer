@@ -34,20 +34,35 @@ sex_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(sex_list) ) + "[ .,?;:'
 sex_re = re.compile(sex_pat)
 
 pattern_start = "[ '(\"]ethn[^ ]*[ .,?;:']|[ '(\"]"
-ethnicity_list = ["african", "african-american", "aboriginal", "arabian", "hispanic", "east-asian","asian", "caucasian", "european", "indian", "islander", "maori", "afro-caribbean", "ethnicity", "ethnic", "racism", "racial"]
+ethnicity_list = ["african", "african-american", "aboriginal", "arabian", "caucasian", "multiracial", "hispanic", "east-asian", "asian", "european", "indian", "islander", "maori", "afro-caribbean", "ethnicity", "ethnic", "racism", "racial"]
 ethno_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(ethnicity_list) ) + "[ .,?;:']"
 ethno_re = re.compile(ethno_pat)
 
 pattern_start = "[ '(\"]health[^ ]*[ .,?;:']|[ '(\"]"
-health_list = ["health", "vaccine", "vaccinate", "medication", "medications", "physician", "hospital", "diet", "vegan", "vegetarian", "allergy", "allergic", "autism", "medicine", "medical", "healthcare", "bacteria", "virus", "disease", "surgery", "surgical", "infection", "symptoms", "doctor", "pharmacy", "vitamins"]
+health_list = ["health", "vaccine", "vaccinate", "medication", "medications", "physician", "hospital", "diet", "vegan", "vegetarian", "allergy", "allergic", "autism", "medicine", "medical", "healthcare", "physio", "physiotherapy", "chyropractor", "bacteria", "virus", "disease", "surgery", "surgical", "infection", "symptoms", "doctor", "pharmacy", "vitamins"]
 health_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(health_list) ) + "[ .,?;:']"
 health_re = re.compile(health_pat)
 
 pattern_start = "[ '(\"]econo[^ ]*[ .,?;:']|[ '(\"]financ[^ ]*[ .,?;:']|[ '(\"]"
-econo_list = ["finance", "money", "savings", "investment", "wages", "salary", "superannuation", "finances", "financial", "monetary", "taxation", "taxes", "accounting", "profit", "profits", "roi", "ebitda", "corporation"]
+econo_list = ["finance", "industry", "money", "savings", "investment", "wages", "salary", "superannuation", "finances", "financial", "monetary", "taxation", "taxes", "accounting", "profit", "profits", "roi", "ebitda", "corporation"]
 econo_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(econo_list) ) + "[ .,?;:']"
 econo_re = re.compile(econo_pat) 
  
+pattern_start = "[ '(\"]athlet[^ ]*[ .,?;:']|[ '(\"]"
+sport_list = ["championship", "tennis", "football", "soccer", "netball", "baseball", "basketball", "cricket", "olympic", "golf", "nrl", "afl", "nba", "rugby", "gymnasium"]
+sport_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(sport_list) ) + "[ .,?;:']"
+sport_re = re.compile(sport_pat)
+
+pattern_start = "[ '(\"]artist[^ ]*[ .,?;:']|[ '(\"]"
+ent_list = ["short film", "feature film", "protagonist", "lyrics", "poetry", "instrumental","guitar", "piano", "orchestra", "percusion", "soundtrack", "music video", "series finale", "book launch", "author", "publisher", "science fiction", "drama", "romantic comedy", "theatre", "art gallery", "sculptor", "musician", "heavy metal", "hip-hop", "hiphop", "hip hop", "electronica", "jazz", "rnb", "soundscape", "festival", "debut novel", "short story", "debut album", "recording studio", "film producer", "method actor", "screenplay"]
+ent_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(ent_list) ) + "[ .,?;:']"
+ent_re = re.compile(ent_pat)
+ 
+pattern_start = "[ '(\"]famil[^ ]*[ .,?;:']|[ '(\"]"
+relo_list = [ "marriage", "wedding", "married couple", "dating", "children", "pregnancy", "divorce", "childbirth", "single mum", "single dad", "single parent", "sibling"]
+relo_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(relo_list) ) + "[ .,?;:']"
+relo_re = re.compile(relo_pat)
+
 ########################################################################################
 def add_text_topics_features(df, columns):
     """
@@ -73,6 +88,9 @@ def add_topic_features(df, col):
         ethno_wds = 0
         econo_wds = 0
         health_wds = 0 
+        sport_wds = 0 
+        arts_wds = 0 
+        family_wds = 0 
         if x[col]!=x[col]:
             sex_wds = 0
         else:
@@ -84,8 +102,11 @@ def add_topic_features(df, col):
             ethno_wds = len(ethno_re.findall(text))
             econo_wds = len(econo_re.findall(text))
             health_wds = len(health_re.findall(text))
-        return religion_wds, politics_wds, sex_wds, ethno_wds, econo_wds, health_wds
+            sport_wds = len(sport_re.findall(text))
+            arts_wds = len(ent_re.findall(text))
+            family_wds = len(relo_re.findall(text))
+        return religion_wds, politics_wds, sex_wds, ethno_wds, econo_wds, health_wds, sport_wds, arts_wds, family_wds
 
-    df[[ col+'_religion', col+'_politics', col+'_sex', col+'_ethnicity', col+'_economics', col+'_health']] = df.apply(prof_features, col=col, axis=1, result_type="expand")
+    df[[ col+'_religion', col+'_politics', col+'_sex', col+'_ethnicity', col+'_economics', col+'_health', col+'_sport',col+'_arts',col+'_family']] = df.apply(prof_features, col=col, axis=1, result_type="expand")
     return df
  

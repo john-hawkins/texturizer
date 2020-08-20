@@ -2,9 +2,16 @@ texturizer
 ----------
 
 ```
-Status - Initial Working Version
+Status - Functional: Initial Working Version for in-memory datasets
 
-TODO: Build functionality to process large datasets in chunks.
+TODO:
+
+* Build functionality to process large datasets in chunks.
+* Add capacity to generate features relative to corpus averages
+* Add capacity for comparison features to be generated relative to refence text
+* Add functionality for working with unix shell pipes and streams
+* Improve emoticon handling to demarcate sentiment
+* Improve topic features to be based on external reference lists of unambiguous words
 ```
 
 This is an application to add features to a dataset that are derived from analysis of
@@ -24,8 +31,24 @@ Built using the
 
 ### Resources & Dependencies
 
-I will be using a combination of [spacy](https://spacy.io/usage/spacy-101) and NLTK
+For Part of Speech Tagging we use [spacy](https://spacy.io/usage/spacy-101)
 
+Note: After install you will need to get spaCy to download the English model.
+```
+sudo python3 -m spacy download en
+```
+
+For string based text comparisons we use [jellyfish](https://pypi.org/project/jellyfish/) and
+[textdistance](https://pypi.org/project/textdistance/)
+
+## Features
+
+-topics. Counts of words from common topics.
+-pos. Part of speech proportions.
+-literacy. Checks for common literacy markers.
+-profanity. Profanity check flags.
+-emoticons. Emoticon check flags.
+-comparison. Cross-column comparisons using edit distance metrics
 
 ## Usage
 

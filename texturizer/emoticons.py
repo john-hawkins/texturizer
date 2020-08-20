@@ -30,7 +30,23 @@ bck_re = re.compile(bck_regex)
      For example emoticons: 8) or (B will not be matched.
 
     To avoid matching characters inside document markup language tags there is a 
-    rudimentary regex based tag removal. 
+    rudimentary regex based tag removal. This will remove URLS and HTML tags before
+    trying to match emoticons
+
+    Some references used when considering which empticons to include:
+
+    https://www.unglobalpulse.org/2014/10/emoticon-use-in-arabic-spanish-and-english-tweets/
+
+https://www.researchgate.net/publication/266269913_From_Emoticon_to_Universal_Symbolic_Signs_Can_Written_Language_Survive_in_Cyberspace
+
+https://www.sciencedirect.com/science/article/abs/pii/S0950329317300939
+
+https://www.semanticscholar.org/paper/An-Approach-towards-Text-to-Emoticon-Conversion-and-Jha/3b81505fa7fec81563b2dafae3939fa1b07f3a98
+
+https://www.qualitative-research.net/index.php/fqs/article/view/175/391
+
+https://www.researchgate.net/publication/221622114_M_Textual_Affect_Sensing_for_Sociable_and_Expressive_Online_Communication
+
 """
 
 

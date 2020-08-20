@@ -10,6 +10,7 @@ import sys
 import os
 
 from .simple import add_text_summary_features
+from .pos import add_text_pos_features
 from .topics import add_text_topics_features
 from .profanity import add_text_profanity_features
 from .literacy import add_text_literacy_features
@@ -42,11 +43,13 @@ def main():
                 simple = add_text_emoticon_features( simple, params["columns"] )
             if params["topics"] :
                 simple = add_text_topics_features( simple, params["columns"] )
+            if params["pos"] :
+                simple = add_text_pos_features( simple, params["columns"] )
             if params["literacy"] :
                 simple = add_text_literacy_features( simple, params["columns"] )
             print_output( simple )
         else:
-            print("Oversize data")
+            print("Oversize data - This functionality is not yet built")
 
 
 #############################################################
@@ -65,6 +68,7 @@ def get_cmd_line_params(argv):
               "profanity":False, 
               "emoticons":False, 
               "topics":False, 
+              "pos":False, 
               "literacy":False, 
               "comparison":False, 
               "embedding":False
@@ -80,6 +84,9 @@ def get_cmd_line_params(argv):
         if parts[0] == "-topics":
             if parts[1] == 'True':
                 result["topics"]=True
+        if parts[0] == "-pos":
+            if parts[1] == 'True':
+                result["pos"]=True
         if parts[0] == "-emoticons":
             if parts[1] == 'True':
                 result["emoticons"]=True
@@ -103,11 +110,12 @@ def print_usage(args):
     print("  <PATH TO DATASET> - Supported file types: csv, tsv, xls, xlsx, odf")
     print(" [ARGS] ")
     print("  -columns=<COMMA SEPARATED LIST>. Default: apply to all string columns.")
-    print("  -topics=<True or False>. Default: False. Add counts of words from common topics.")
-    print("  -literacy=<True or False>. Default: False. Add checks for common literacy markers.")
-    print("  -profanity=<True or False>. Default: False. Add profanity check flags.")
-    print("  -emoticons=<True or False>. Default: False. Add emoticon check flags.")
-    print("  -comparison=<True or False>. Default: False. Add cross field comparisons.")
+    print("  -topics=<True or False>. Default: False. Counts of words from common topics.")
+    print("  -pos=<True or False>. Default: False. Part of speech proportions.")
+    print("  -literacy=<True or False>. Default: False. Checks for common literacy markers.")
+    print("  -profanity=<True or False>. Default: False. Profanity check flags.")
+    print("  -emoticons=<True or False>. Default: False. Emoticon check flags.")
+    print("  -comparison=<True or False>. Default: False. Cross-column comparisons.")
     print("")
 
 
