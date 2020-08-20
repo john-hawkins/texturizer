@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pkg_resources
 import pandas as pd 
 import numpy as np
 import math
@@ -8,60 +9,82 @@ import re
 """
     texturizer.topics: Common Topic Features
 
-    Simple pattern matching to generate features for very common topics that come up 
-    when building models for sentiment or document classification. These features will
-    contain the count of words which are unambigously related to a specific topic.
+    Simple pattern matching to generate features for very common topics for text data.
+    We have focused on topics that are common in media, commentary and diacussion by
+    the general public.  
+    The goal with these features is to provide a count of words which are 
+    unambigously related to a specific topic.
 
-    NOTE: That these have been deliberately reduced to a set that are more likely to be 
-          encountered in modern Australian spoken language or internet comments.
+    NOTE: That the words in these sets have been deliberately selected to be a set 
+          that are less likely to match false positives. In other words they are 
+          generally only used when talking about that specific topic, or when talking
+          using metaphor or analogy.
 """
 
-########################################################################################
 
-pattern_start = "[ '(\"]christ[^ ]*[ .,?;:']|[ '(\"]islam[^ ]*[ .,?;:']|[ '(\"]"
-religion_list = ["jesus","christ","god","christians", "islam", "islamic","jew","jewish", "judaism", "holy", "church", "ashram", "budhha", "hindu", "jehovah", "allah", "religious","religion", "pious","godly", "spiritual", "muslim", "infidel", "shinto", "apostate", "messiah", "theology", "sacred", "scripture","missionary","hinduism","buddhism","rabbi","koran","synagogue","torah","protestant","spirituality","protestantism","catholic","catholicism","presbytery","blasphemy","blaspheme","krishnaism","krishna","mormon","theism","monotheism","poltheism","polytheist","polytheistic","abrahamic", "baptize", "bible-basher", "pentecostal", "pentecostalism", "god–fearing" ]
-religion_pat = pattern_start  + ( "[ .,?!;:'\"]|[- '(\"]".join(religion_list) ) + "[ .,?;:']"
+########################################################################################
+resource_package = __name__
+
+def load_word_list(filename):
+    """
+    Utility function to load topic vocab word lists for pattern matching. 
+    """
+    _path = '/'.join(('data', filename))
+    rawd = pkg_resources.resource_string(resource_package, _path)
+    word_list = str(rawd).split('\n')
+    _list = [i for i in word_list if i]
+    return _list
+
+########################################################################################
+religion_list = load_word_list('religion.dat')
+pattern_start = "\\bchristi|\\bislam|\\b"
+religion_pat = pattern_start  + ( "\\b|\\b".join(religion_list) ) + "\\b"
 religion_re = re.compile(religion_pat)
 
-pattern_start = "[ '(\"]politic[^ ]*[ .,?;:']|[ '(\"]"
-politics_list = ["federal","politics","election","senator","government","democratic","totalitarian","democracy","political", "policy", "lobbyist", "governor", "mayor", "council", "capitalism", "communism", "socialism", "capitalist", "socialist", "communist", "republic", "republican", "libertarian", "leftwing", "left-wing", "rightwing", "right-wing","demagogue","gerrymander", "ideology", "bipartisan", "caucus", "politicise", "politically", "politicking", "sociopolitical","dictator","dictatorship","monarchy","democrat","congress"] 
-politics_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(politics_list) ) + "[ .,?;:']"
+politics_list = load_word_list('politics.dat')
+pattern_start = "\\bpoliti|\\b"
+politics_pat = pattern_start + ( "\\b|\\b".join(politics_list) ) + "\\b"
 politics_re = re.compile(politics_pat)
 
-pattern_start = "[ '(\"]sex[^ ]*[ .,?;:']|[ '(\"]"
-sex_list = ["sex", "sexuality", "homosexuality", "homosexual", "heterosexuality", "heterosexual", "bisexuality","bisexual","orgasm","g-spot","masturbation","masturbate","pornography","porn","whore","prostitute","prostitution","oral-sex","cunnilingus","felatio","vagina","penis","anal-sex", "doggy-style", "kinky", "vajayjay", "punani", "furburger"]
-sex_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(sex_list) ) + "[ .,?;:']"
+sex_list = load_word_list('sex.dat')
+pattern_start = "\\bsex[^t][^ *]\\b|\\b"
+sex_pat = pattern_start + ( "\\b|\\b".join(sex_list) ) + "\\b"
 sex_re = re.compile(sex_pat)
 
-pattern_start = "[ '(\"]ethn[^ ]*[ .,?;:']|[ '(\"]"
-ethnicity_list = ["african", "african-american", "aboriginal", "arabian", "caucasian", "multiracial", "hispanic", "east-asian", "asian", "european", "indian", "islander", "maori", "afro-caribbean", "ethnicity", "ethnic", "racism", "racial"]
-ethno_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(ethnicity_list) ) + "[ .,?;:']"
+ethnicity_list = load_word_list('ethnicity.dat')
+pattern_start = "\\bethn|\\b"
+ethno_pat = pattern_start + ( "\\b|\\b".join(ethnicity_list) ) + "\\b"
 ethno_re = re.compile(ethno_pat)
 
-pattern_start = "[ '(\"]health[^ ]*[ .,?;:']|[ '(\"]"
-health_list = ["health", "vaccine", "vaccinate", "medication", "medications", "physician", "hospital", "diet", "vegan", "vegetarian", "allergy", "allergic", "autism", "medicine", "medical", "healthcare", "physio", "physiotherapy", "chyropractor", "bacteria", "virus", "disease", "surgery", "surgical", "infection", "symptoms", "doctor", "pharmacy", "vitamins"]
-health_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(health_list) ) + "[ .,?;:']"
+health_list = load_word_list('health.dat')
+pattern_start = "\\bhealth|\\b"
+health_pat = pattern_start + ( "\\b|\\b".join(health_list) ) + "\\b"
 health_re = re.compile(health_pat)
 
-pattern_start = "[ '(\"]econo[^ ]*[ .,?;:']|[ '(\"]financ[^ ]*[ .,?;:']|[ '(\"]"
-econo_list = ["finance", "industry", "money", "savings", "investment", "wages", "salary", "superannuation", "finances", "financial", "monetary", "taxation", "taxes", "accounting", "profit", "profits", "roi", "ebitda", "corporation"]
-econo_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(econo_list) ) + "[ .,?;:']"
+econo_list = load_word_list('economics.dat')
+pattern_start = "\\becono|\\bfinan|\\b"
+econo_pat = pattern_start + ( "\\b|\\b".join(econo_list) ) + "\\b"
 econo_re = re.compile(econo_pat) 
  
-pattern_start = "[ '(\"]athlet[^ ]*[ .,?;:']|[ '(\"]"
-sport_list = ["championship", "tennis", "football", "soccer", "netball", "baseball", "basketball", "cricket", "olympic", "golf", "nrl", "afl", "nba", "rugby", "gymnasium"]
-sport_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(sport_list) ) + "[ .,?;:']"
+sports_list = load_word_list('sports.dat')
+pattern_start = "\\bathlet\\b|\\b"
+sport_pat = pattern_start + ( "\\b|\\b".join(sports_list) ) + "\\b"
 sport_re = re.compile(sport_pat)
 
-pattern_start = "[ '(\"]artist[^ ]*[ .,?;:']|[ '(\"]"
-ent_list = ["short film", "feature film", "protagonist", "lyrics", "poetry", "instrumental","guitar", "piano", "orchestra", "percusion", "soundtrack", "music video", "series finale", "book launch", "author", "publisher", "science fiction", "drama", "romantic comedy", "theatre", "art gallery", "sculptor", "musician", "heavy metal", "hip-hop", "hiphop", "hip hop", "electronica", "jazz", "rnb", "soundscape", "festival", "debut novel", "short story", "debut album", "recording studio", "film producer", "method actor", "screenplay"]
-ent_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(ent_list) ) + "[ .,?;:']"
-ent_re = re.compile(ent_pat)
- 
-pattern_start = "[ '(\"]famil[^ ]*[ .,?;:']|[ '(\"]"
-relo_list = [ "marriage", "wedding", "married couple", "dating", "children", "pregnancy", "divorce", "childbirth", "single mum", "single dad", "single parent", "sibling"]
-relo_pat = pattern_start + ( "[ .,?!;:'\"]|[- '(\"]".join(relo_list) ) + "[ .,?;:']"
-relo_re = re.compile(relo_pat)
+arts_list = load_word_list('arts.dat')
+pattern_start = "\\bartist|\\b"
+arts_pat = pattern_start + ( "\\b|\\b".join(arts_list) ) + "\\b"
+arts_re = re.compile(arts_pat)
+  
+family_list = load_word_list('family.dat')
+pattern_start = "\\bfamil\\b|\\b"
+family_pat = pattern_start + ( "\\b|\\b".join(family_list) ) + "\\b"
+family_re = re.compile(family_pat)
+
+crime_list = load_word_list('crime.dat')
+pattern_start = "\\bcrimina|\\b"
+crime_pat = pattern_start + ( "\\b|\\b".join(crime_list) ) + "\\b"
+crime_re = re.compile(crime_pat)
 
 ########################################################################################
 def add_text_topics_features(df, columns):
@@ -91,11 +114,11 @@ def add_topic_features(df, col):
         sport_wds = 0 
         arts_wds = 0 
         family_wds = 0 
+        crime_wds = 0 
         if x[col]!=x[col]:
             sex_wds = 0
         else:
             text = (x[col].lower())
-            word_array = text.split()
             religion_wds = len(religion_re.findall(text))
             politics_wds = len(politics_re.findall(text))
             sex_wds = len(sex_re.findall(text))
@@ -103,10 +126,11 @@ def add_topic_features(df, col):
             econo_wds = len(econo_re.findall(text))
             health_wds = len(health_re.findall(text))
             sport_wds = len(sport_re.findall(text))
-            arts_wds = len(ent_re.findall(text))
-            family_wds = len(relo_re.findall(text))
-        return religion_wds, politics_wds, sex_wds, ethno_wds, econo_wds, health_wds, sport_wds, arts_wds, family_wds
+            arts_wds = len(arts_re.findall(text))
+            family_wds = len(family_re.findall(text))
+            crime_wds = len(crime_re.findall(text))
+        return religion_wds, politics_wds, sex_wds, ethno_wds, econo_wds, health_wds, sport_wds, arts_wds, family_wds, crime_wds
 
-    df[[ col+'_religion', col+'_politics', col+'_sex', col+'_ethnicity', col+'_economics', col+'_health', col+'_sport',col+'_arts',col+'_family']] = df.apply(prof_features, col=col, axis=1, result_type="expand")
+    df[[ col+'_religion', col+'_politics', col+'_sex', col+'_ethnicity', col+'_economics', col+'_health', col+'_sport',col+'_arts',col+'_family',col+'_crime']] = df.apply(prof_features, col=col, axis=1, result_type="expand")
     return df
  

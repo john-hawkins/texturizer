@@ -9,6 +9,7 @@ import pandas as pd
 import sys
 import os
 
+from .process import load_complete_dataframe
 from .simple import add_text_summary_features
 from .pos import add_text_pos_features
 from .topics import add_text_topics_features
@@ -33,7 +34,7 @@ def main():
             exit(1)
         filesize = os.stat(params["dataset"]).st_size
         if filesize<max_filesize:
-            df = pd.read_csv( params["dataset"], low_memory=False )
+            df = load_complete_dataframe( params["dataset"] )
             simple = add_text_summary_features( df, params["columns"] )
             if params["comparison"] :
                 simple = add_comparison_features( simple, params["columns"] )
