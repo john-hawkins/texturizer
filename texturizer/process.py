@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import pkg_resources
 import pandas as pd 
 import numpy as np
 import math
@@ -14,7 +14,18 @@ from .config import max_filesize
     The goal of this module is to permit the feature generation to be done
     on files larger than the memory by processing in chunks.
 """
+########################################################################################
+resource_package = __name__
 
+def load_word_list(filename):
+    """
+    Utility function to load topic vocab word lists for pattern matching.
+    """
+    _path = '/'.join(('data', filename))
+    rawd = pkg_resources.resource_string(resource_package, _path)
+    word_list = str(rawd).split('\n')
+    _list = [i for i in word_list if i]
+    return _list
 
 ########################################################################################
 def process_file_in_chunks(path_to_file, function_to_apply, output_stream):

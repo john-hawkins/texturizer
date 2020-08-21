@@ -14,6 +14,7 @@ from .simple import add_text_summary_features
 from .pos import add_text_pos_features
 from .topics import add_text_topics_features
 from .profanity import add_text_profanity_features
+from .personality import add_text_personality_features
 from .literacy import add_text_literacy_features
 from .emoticons import add_text_emoticon_features
 from .comparison import add_comparison_features
@@ -44,6 +45,8 @@ def main():
                 simple = add_text_emoticon_features( simple, params["columns"] )
             if params["topics"] :
                 simple = add_text_topics_features( simple, params["columns"] )
+            if params["traits"] :
+                simple = add_text_personality_features( simple, params["columns"] )
             if params["pos"] :
                 simple = add_text_pos_features( simple, params["columns"] )
             if params["literacy"] :
@@ -69,6 +72,7 @@ def get_cmd_line_params(argv):
               "profanity":False, 
               "emoticons":False, 
               "topics":False, 
+              "traits":False, 
               "pos":False, 
               "literacy":False, 
               "comparison":False, 
@@ -85,6 +89,9 @@ def get_cmd_line_params(argv):
         if parts[0] == "-topics":
             if parts[1] == 'True':
                 result["topics"]=True
+        if parts[0] == "-traits":
+            if parts[1] == 'True':
+                result["traits"]=True
         if parts[0] == "-pos":
             if parts[1] == 'True':
                 result["pos"]=True
@@ -112,6 +119,7 @@ def print_usage(args):
     print(" [ARGS] ")
     print("  -columns=<COMMA SEPARATED LIST>. Default: apply to all string columns.")
     print("  -topics=<True or False>. Default: False. Counts of words from common topics.")
+    print("  -traits=<True or False>. Default: False. Word usage for personality traits.")
     print("  -pos=<True or False>. Default: False. Part of speech proportions.")
     print("  -literacy=<True or False>. Default: False. Checks for common literacy markers.")
     print("  -profanity=<True or False>. Default: False. Profanity check flags.")
