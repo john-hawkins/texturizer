@@ -81,10 +81,25 @@ pattern_start = "\\bfamil\\b|\\b"
 family_pat = pattern_start + ( "\\b|\\b".join(family_list) ) + "\\b"
 family_re = re.compile(family_pat)
 
+love_list = load_word_list('love.dat')
+pattern_start = "\\bromanc\\b|\\b"
+love_pat = pattern_start + ( "\\b|\\b".join(love_list) ) + "\\b"
+love_re = re.compile(love_pat)
+
 crime_list = load_word_list('crime.dat')
 pattern_start = "\\bcrimina|\\b"
 crime_pat = pattern_start + ( "\\b|\\b".join(crime_list) ) + "\\b"
 crime_re = re.compile(crime_pat)
+
+travel_list = load_word_list('travel.dat')
+pattern_start = "\\btravel|\\b"
+travel_pat = pattern_start + ( "\\b|\\b".join(travel_list) ) + "\\b"
+travel_re = re.compile(travel_pat)
+
+food_list = load_word_list('food.dat')
+pattern_start = "\\b|\\b"
+food_pat = pattern_start + ( "\\b|\\b".join(food_list) ) + "\\b"
+food_re = re.compile(food_pat)
 
 ########################################################################################
 def add_text_topics_features(df, columns):
@@ -114,6 +129,7 @@ def add_topic_features(df, col):
         sport_wds = 0 
         arts_wds = 0 
         family_wds = 0 
+        love_wds = 0 
         crime_wds = 0 
         if x[col]!=x[col]:
             sex_wds = 0
@@ -128,9 +144,10 @@ def add_topic_features(df, col):
             sport_wds = len(sport_re.findall(text))
             arts_wds = len(arts_re.findall(text))
             family_wds = len(family_re.findall(text))
+            love_wds = len(love_re.findall(text))
             crime_wds = len(crime_re.findall(text))
-        return religion_wds, politics_wds, sex_wds, ethno_wds, econo_wds, health_wds, sport_wds, arts_wds, family_wds, crime_wds
+        return religion_wds, politics_wds, sex_wds, ethno_wds, econo_wds, health_wds, sport_wds, arts_wds, family_wds, love_wds, crime_wds
 
-    df[[ col+'_religion', col+'_politics', col+'_sex', col+'_ethnicity', col+'_economics', col+'_health', col+'_sport',col+'_arts',col+'_family',col+'_crime']] = df.apply(prof_features, col=col, axis=1, result_type="expand")
+    df[[ col+'_religion', col+'_politics', col+'_sex', col+'_ethnicity', col+'_economics', col+'_health', col+'_sport', col+'_arts', col+'_family', col+'_love', col+'_crime']] = df.apply(prof_features, col=col, axis=1, result_type="expand")
     return df
  
