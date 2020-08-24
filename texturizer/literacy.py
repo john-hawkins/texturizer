@@ -6,10 +6,8 @@ import math
 import os
 import re
 
-resource_package = __name__
-resource_path = '/'.join(('data', 'misspelling.dat'))  
-misspellings = pkg_resources.resource_string(resource_package, resource_path)
- 
+from .process import load_word_list
+
 """
     texturizer.literacy: Literacy feature flags
 
@@ -20,11 +18,9 @@ misspellings = pkg_resources.resource_string(resource_package, resource_path)
 """
 
 ########################################################################################
- 
-pattern_start = "[- '(\"]"
-word_list = str(misspellings).split('\n')
-misspelling_list = [i for i in word_list if i] 
-misspelling_pat = pattern_start  + ( "[ .,?!;:'\"]|[- '(\"]".join(misspelling_list) ) + "[ .,?;:']"
+misspelling_list = load_word_list('misspelling.dat') 
+pattern_start = "\\b"
+misspelling_pat = pattern_start  + ( "\\b|\\b".join(misspelling_list) ) + "\\b"
 misspelling_re = re.compile(misspelling_pat)
 
 grammar_pat = "[ '(\"][aA] [AaEeIiOoUu]|[^.][^A-Z]\. [a-z]|\b(\w+)\b \b\1\b"
