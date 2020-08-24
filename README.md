@@ -43,12 +43,16 @@ For string based text comparisons we use [jellyfish](https://pypi.org/project/je
 
 ## Features
 
--topics. Counts of words from common topics.
--pos. Part of speech proportions.
--literacy. Checks for common literacy markers.
--profanity. Profanity check flags.
--emoticons. Emoticon check flags.
--comparison. Cross-column comparisons using edit distance metrics
+Each type of feature can be unlocked through the use of a specific command line switch:
+
+* -topics. Indicators for presence of words from common topics.
+* -topics=count. Counts of all word matches from common topics.
+* -pos. Part of speech proportions in the text.
+* -literacy. Checks for common literacy markers.
+* -traits. Checks for common stylistic elements or traits that suggest personality type.
+* -profanity. Profanity check flags.
+* -emoticons. Emoticon check flags.
+* -comparison. Cross-column comparisons using edit distance metrics
 
 ## Usage
 
@@ -57,7 +61,7 @@ You can use this application multiple ways
 Use the runner:
 
 ```
-./texturizer-runner.py -columns=question,answer data/test.csv > data/output.csv
+./texturizer-runner.py -columns=question,answer  -topics data/test.csv > data/output.csv
 ```
 
 Invoke the directory as a package:
@@ -85,7 +89,7 @@ pip install texturizer
 Now, the ``texturizer`` command is available::
 
 ```
-texturizer -columns=question,answer data/test.csv > data/output.csv
+texturizer -columns=question,answer -topics data/test.csv > data/output.csv
 ```
 
 This will produce take the [Input CSV](data/test.csv), add simple summary columns and 

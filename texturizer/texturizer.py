@@ -44,7 +44,10 @@ def main():
             if params["emoticons"] :
                 simple = add_text_emoticon_features( simple, params["columns"] )
             if params["topics"] :
-                simple = add_text_topics_features( simple, params["columns"] )
+                if params["count_matches"] :
+                    simple = add_text_topics_features( simple, params["columns"], 'count' )
+                else:
+                    simple = add_text_topics_features( simple, params["columns"] )
             if params["traits"] :
                 simple = add_text_personality_features( simple, params["columns"] )
             if params["pos"] :
@@ -72,6 +75,7 @@ def get_cmd_line_params(argv):
               "profanity":False, 
               "emoticons":False, 
               "topics":False, 
+              "count_matches":False, 
               "traits":False, 
               "pos":False, 
               "literacy":False, 
@@ -81,29 +85,24 @@ def get_cmd_line_params(argv):
     for o in options:
         parts = o.split("=")
         if parts[0] == "-literacy":
-            if parts[1] == 'True':
-                result["literacy"]=True
+            result["literacy"]=True
         if parts[0] == "-profanity":
-            if parts[1] == 'True':
-                result["profanity"]=True
+            result["profanity"]=True
         if parts[0] == "-topics":
-            if parts[1] == 'True':
-                result["topics"]=True
+            result["topics"]=True
+            if len(parts)>1:
+                if parts[1] == 'count':
+                    result["count_matches"]=True
         if parts[0] == "-traits":
-            if parts[1] == 'True':
-                result["traits"]=True
+            result["traits"]=True
         if parts[0] == "-pos":
-            if parts[1] == 'True':
-                result["pos"]=True
+            result["pos"]=True
         if parts[0] == "-emoticons":
-            if parts[1] == 'True':
-                result["emoticons"]=True
+            result["emoticons"]=True
         if parts[0] == "-embedding":
-            if parts[1] == 'True':
-                result["embedding"]=True
+            result["embedding"]=True
         if parts[0] == "-comparison":
-            if parts[1] == 'True':
-                result["comparison"]=True
+            result["comparison"]=True
         if parts[0] == "-columns":
             cols = parts[1].split(",")
             result["columns"]=cols
@@ -116,15 +115,15 @@ def print_usage(args):
     print("USAGE ")
     print(args[0], " [ARGS] <PATH TO DATASET>")
     print("  <PATH TO DATASET> - Supported file types: csv, tsv, xls, xlsx, odf")
-    print(" [ARGS] ")
+    print(" [ARGS] In most cases these are switches that turn on the feature type")
     print("  -columns=<COMMA SEPARATED LIST>. Default: apply to all string columns.")
-    print("  -topics=<True or False>. Default: False. Counts of words from common topics.")
-    print("  -traits=<True or False>. Default: False. Word usage for personality traits.")
-    print("  -pos=<True or False>. Default: False. Part of speech proportions.")
-    print("  -literacy=<True or False>. Default: False. Checks for common literacy markers.")
-    print("  -profanity=<True or False>. Default: False. Profanity check flags.")
-    print("  -emoticons=<True or False>. Default: False. Emoticon check flags.")
-    print("  -comparison=<True or False>. Default: False. Cross-column comparisons.")
+    print("  -topics OR -topics=count. Default: False. Match words from common topics (or count matches).")
+    print("  -traits Default: False. Word usage for personality traits.")
+    print("  -pos Default: False. Part of speech proportions.")
+    print("  -literacy Default: False. Checks for common literacy markers.")
+    print("  -profanity Default: False. Profanity check flags.")
+    print("  -emoticons Default: False. Emoticon check flags.")
+    print("  -comparison Default: False. Cross-column comparisons.")
     print("")
 
 
