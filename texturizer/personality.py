@@ -14,8 +14,11 @@ from .process import load_word_list
     This module performs word or phrase matching to generate features 
     that can be indicative of personailuty traits in a writer or speaker.
 
-    Some ideas taken from this article
+    Some ideas taken from these articles
+
     https://www.scientificamerican.com/article/you-are-what-you-say/
+
+    https://hbr.org/2011/12/your-use-of-pronouns-reveals-your-personality
 """
 
 ########################################################################################
