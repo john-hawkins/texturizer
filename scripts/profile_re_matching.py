@@ -12,6 +12,7 @@ import pandas as pd
 import re
 df = pd.read_csv('../data/yahoo_answers.csv')
 pattern = '\\bbasketball\\b|\\bbaseball\\b|\\bfootball\\b|\\bgolf\\b'
+pattern2 = '\\bChristi|\\bchristi|\\bIslam|\\breligion\\b|\\bGod\\b|\\prayer'
 matcher = re.compile(pattern)
 
 def features(x, col):
@@ -43,3 +44,9 @@ times2 = timeit.repeat(setup = SETUP_CODE, stmt = TEST_CODE2, number = 5)
 print("Loc Time:", times2 )
 
 
+TEST_CODE3 = """\
+df['sport_matches'] = df[col].str.count(pattern)
+""" 
+times3 = timeit.repeat(setup = SETUP_CODE, stmt = TEST_CODE3, number = 5)
+
+print("Count Time:", times3 )
