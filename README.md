@@ -58,16 +58,34 @@ Each type of feature can be unlocked through the use of a specific command line 
 
 You can use this application multiple ways
 
-Use the runner:
+Use the runner without installing the application. 
+The following example will generate all features on the test data.
 
 ```
-./texturizer-runner.py -columns=question,answer  -topics data/test.csv > data/output.csv
+./texturizer-runner.py -columns=question,answer -pos -literacy -traits -profanity -emoticons -sentiment -comparison -topics=count data/test.csv > data/output.csv
 ```
 
-Invoke the directory as a package:
-
+This will send the time performance profile to STDERR as shown below:
 ```
-python -m texturizer -columns=question,answer data/test.csv
+Computation Time Profile for each Feature Set
+---------------------------------------------
+simple               0:00:00.521356
+comparison           0:00:00.460415
+profanity            0:00:00.461585
+sentiment            0:00:01.429136
+emoticons            0:00:00.373074
+topics               0:00:02.685745
+traits               0:00:02.082641
+pos                  0:00:20.773449
+literacy             0:00:00.481656
+```  
+As you can see the part of speech (POS) features are the most time 
+consuming to generate. It is worth avoiding them on very large datasets.
+
+Alternatively, you can invoke the directory as a package:
+ 
+```
+python -m texturizer -columns=question,answer data/test.csv > data/output.csv
 ```
 
 Or simply install the package and use the command line application directly
