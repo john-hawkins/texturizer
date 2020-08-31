@@ -4,11 +4,14 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 
 """
-    texturizer.nlp: Part of Speech features using spaCy
+    texturizer.pos Part of Speech features using spaCy
 
     Extraction of part of speech tags for a block of text and then generation
     of numerical features that summarise the grammatical structure of that text.
 
+    Notes: I have implemented this inside a single 'apply' function which gives 
+    some speed advantage. However, it is still slow. I am still looking for ways
+    to speed this up.
 """
 
 ########################################################################################
