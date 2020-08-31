@@ -10,11 +10,16 @@ import sys
 import os
 
 from .process import load_complete_dataframe
+from .process import initialise_profile
+from .process import start_profile
+from .process import end_profile
+from .process import print_profiles
 from .simple import add_text_summary_features
 from .pos import add_text_pos_features
 from .topics import add_text_topics_features
 from .profanity import add_text_profanity_features
 from .personality import add_text_personality_features
+from .sentiment import add_text_sentiment_features
 from .literacy import add_text_literacy_features
 from .emoticons import add_text_emoticon_features
 from .comparison import add_comparison_features
@@ -36,28 +41,49 @@ def main():
         filesize = os.stat(params["dataset"]).st_size
         if filesize<max_filesize:
             df = load_complete_dataframe( params["dataset"] )
+            start_profile("simple")
             simple = add_text_summary_features( df, params["columns"] )
+            end_profile("simple")
             if params["comparison"] :
+                start_profile("comparison")
                 simple = add_comparison_features( simple, params["columns"] )
+                end_profile("comparison")
             if params["profanity"] :
+                start_profile("profanity")
                 simple = add_text_profanity_features( simple, params["columns"] )
+                end_profile("profanity")
+            if params["sentiment"] :
+                start_profile("sentiment")
+                simple = add_text_sentiment_features( simple, params["columns"] )
+                end_profile("sentiment")
             if params["emoticons"] :
+                start_profile("emoticons")
                 simple = add_text_emoticon_features( simple, params["columns"] )
+                end_profile("emoticons")
             if params["topics"] :
+                start_profile("topics")
                 if params["count_matches"] :
                     simple = add_text_topics_features( simple, params["columns"], 'count' )
                 else:
                     simple = add_text_topics_features( simple, params["columns"] )
+                end_profile("topics")
             if params["traits"] :
+                start_profile("traits")
                 simple = add_text_personality_features( simple, params["columns"] )
+                end_profile("traits")
             if params["pos"] :
+                start_profile("pos")
                 simple = add_text_pos_features( simple, params["columns"] )
+                end_profile("pos")
             if params["literacy"] :
+                start_profile("literacy")
                 simple = add_text_literacy_features( simple, params["columns"] )
+                end_profile("literacy")
             print_output( simple )
         else:
             print("Oversize data - This functionality is not yet built")
 
+        print_profiles()
 
 #############################################################
 def print_output(df):
@@ -73,6 +99,7 @@ def get_cmd_line_params(argv):
     result = {"dataset":data,
               "columns":[], 
               "profanity":False, 
+              "sentiment":False, 
               "emoticons":False, 
               "topics":False, 
               "count_matches":False, 
@@ -88,6 +115,8 @@ def get_cmd_line_params(argv):
             result["literacy"]=True
         if parts[0] == "-profanity":
             result["profanity"]=True
+        if parts[0] == "-sentiment":
+            result["sentiment"]=True
         if parts[0] == "-topics":
             result["topics"]=True
             if len(parts)>1:
@@ -122,6 +151,7 @@ def print_usage(args):
     print("  -pos Default: False. Part of speech proportions.")
     print("  -literacy Default: False. Checks for common literacy markers.")
     print("  -profanity Default: False. Profanity check flags.")
+    print("  -sentiment Default: False. Words counts for positive and negative sentiment.")
     print("  -emoticons Default: False. Emoticon check flags.")
     print("  -comparison Default: False. Cross-column comparisons.")
     print("")

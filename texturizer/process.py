@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+import datetime as dt
 import pkg_resources
 import pandas as pd 
 import numpy as np
+import codecs
 import math
+import sys
 import os
+import re
 
 from .config import max_filesize
  
@@ -17,15 +22,69 @@ from .config import max_filesize
 ########################################################################################
 resource_package = __name__
 
-def load_word_list(filename):
+def load_word_list(filename, escape=False):
     """
     Utility function to load topic vocab word lists for pattern matching.
     """
     _path = '/'.join(('data', filename))
-    rawd = pkg_resources.resource_string(resource_package, _path)
+    rawd = pkg_resources.resource_string(resource_package, _path).decode("utf-8")
+    rawd = rawd[:-1]
+    if escape:
+        rawd = re.escape(rawd)
     word_list = str(rawd).split('\n')
     _list = [i for i in word_list if i]
     return _list
+
+########################################################################################
+
+def load_word_pattern(filename, prefix="", pluralize=True, bound=True, escape=False):
+    word_list = load_word_list(filename, escape=escape)
+    if bound:
+       delimiter = "\\b"
+    else:
+       delimiter = ""
+    pattern_start = prefix + delimiter
+    if pluralize:
+        tail = "s*" + delimiter
+        joiner = "s*" + delimiter + "|" + delimiter
+    else:
+        tail = delimiter
+        joiner = delimiter + "|" + delimiter
+
+    pattern = pattern_start  + ( joiner.join(word_list) ) + tail
+    return pattern
+
+
+########################################################################################
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+profiles = {}
+
+def initialise_profile():
+    profiles = {}
+
+def start_profile(proc_name):
+    n1=dt.datetime.now()
+    profiles[proc_name] = {"start":n1}
+
+def end_profile(proc_name):
+    n2 = dt.datetime.now()
+    n1 = profiles[proc_name]["start"]
+    total = str(n2-n1)
+    profiles[proc_name]["end"] = n2
+    profiles[proc_name]["total"] = total
+
+def print_profiles():
+    eprint("Computation Time Profile for each Feature Set")
+    eprint("---------------------------------------------")
+    for k in profiles.keys():
+        eprint(padded(k), profiles[k]["total"]) 
+
+def padded(k):
+    spacer_len = 20 - len(k)
+    return k + (" "*spacer_len)
 
 ########################################################################################
 def process_file_in_chunks(path_to_file, function_to_apply, output_stream):
@@ -98,3 +157,25 @@ def len_or_null(val):
 def isNaN(num):
     return num != num
 
+########################################################################################
+def remove_urls_and_tags(text):
+    """
+        Remove any obvious text elements that appear to be either 
+        URLs or HTML tags
+    """
+    patterns = ["https?://[-._a-z0-9A-Z]*","</?[a-zA-Z]* ?[a-zA-Z'=.]* ?/?>","\\[tnrf]"]
+    new_text = text
+    for p in patterns:
+        new_text = re.sub(p, ' ', new_text)
+    return new_text
+
+########################################################################################
+def remove_escapes_and_non_printable(text):
+    """
+        Apply the codecs escape to decode any escaped characters.
+        Then apply a regex to remove any non printable characters
+    """
+    new_text0 = codecs.escape_decode(text)[0].decode("utf-8")
+    pattern = "\0|\n|\r|\b|\t|\f|\v"
+    new_text1 = re.sub(pattern, " ", new_text0)
+    return new_text1

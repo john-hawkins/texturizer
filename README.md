@@ -37,7 +37,6 @@ Note: After install you will need to get spaCy to download the English model.
 ```
 sudo python3 -m spacy download en
 ```
-
 For string based text comparisons we use [jellyfish](https://pypi.org/project/jellyfish/) and
 [textdistance](https://pypi.org/project/textdistance/)
 
@@ -51,6 +50,7 @@ Each type of feature can be unlocked through the use of a specific command line 
 * -literacy. Checks for common literacy markers.
 * -traits. Checks for common stylistic elements or traits that suggest personality type.
 * -profanity. Profanity check flags.
+* -sentiment. Sentiment word counts and score.
 * -emoticons. Emoticon check flags.
 * -comparison. Cross-column comparisons using edit distance metrics
 
