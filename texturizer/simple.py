@@ -4,16 +4,22 @@ import numpy as np
 import math
 import os
 
-stop_word_list = ["a","able","about","across","after","all","almost","also","am","among","an","and","any","are","as","at","be","because","been","but","by","can","cannot","could","dear","did","do","does","either","else","ever","every","for","from","get","got","had","has","have","he","her","hers","him","his","how","however","i","if","in","into","is","it","its","just","least","let","like","likely","may","me","might","most","must","my","neither","no","nor","not","of","off","often","on","only","or","other","our","own","rather","said","say","says","she","should","since","so","some","than","that","the","their","them","then","there","these","they","this","tis","to","too","twas","us","wants","was","we","were","what","when","where","which","while","who","whom","why","will","with","would","yet","you","your"]
+from .process import remove_escapes_and_non_printable
+from .process import remove_urls_and_tags
+from .process import load_word_list
 
 """
-    texturizer.simple: Basic text feature calculation
+    texturizer.simple: Basic text feature calculation.
+
     Calculate statistics such as the average length of words, max word length
-    proportion of non stop-words.
+    proportion of non stop-words. We also create a clean version of the text
+    that can be used by other functions in the library.
 
     Stop-word list taken from: https://www.textfixer.com/tutorials/common-english-words.txt 
 
 """
+
+stop_word_list = load_word_list("stop-words.dat") 
 
 ########################################################################################
 def add_text_summary_features(df, columns):
@@ -40,7 +46,9 @@ def add_text_features(df, col):
             avg_word_len = 0 
             content_wd = 0 
             capital_d = 0
+            text = ""
         else:
+            text = remove_urls_and_tags( remove_escapes_and_non_printable( x[col] ) )
             chars = null_tolerant_len(x[col])
             capitals = sum(1 for c in x[col] if c.isupper())
             capital_d = capitals/chars
@@ -50,9 +58,9 @@ def add_text_features(df, col):
             word_lengths = list(map(len, word_array))
             avg_word_len = sum(word_lengths)/word_count
             content_wd = len(non_stop_words)/len(word_array)
-        return word_count, avg_word_len, content_wd, capital_d
+        return word_count, avg_word_len, content_wd, capital_d, text
 
-    df[[col+'_wc', col+'_avg_wl', col+'_cwd', col+'_caps']] = df.apply(cal_features, col=col, axis=1, result_type="expand")
+    df[[col+'_wc', col+'_avg_wl', col+'_cwd', col+'_caps', col+'_cleaned']] = df.apply(cal_features, col=col, axis=1, result_type="expand")
 
     return df
 
