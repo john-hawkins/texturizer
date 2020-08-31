@@ -7,6 +7,7 @@ import os
 import re
 
 from .process import load_word_list
+from .process import load_word_pattern
 
 """
     texturizer.topics: Common Topic Features
@@ -25,70 +26,53 @@ from .process import load_word_list
 """
 
 ########################################################################################
-religion_list = load_word_list('religion.dat')
-pattern_start = "\\bchristi|\\bislam|\\b"
-religion_pat = pattern_start  + ( "\\b|\\b".join(religion_list) ) + "\\b"
+
+religion_pat = load_word_pattern('religion.dat', "\\bchristi|\\bislam|")
 religion_re = re.compile(religion_pat)
 
-politics_list = load_word_list('politics.dat')
-pattern_start = "\\bpoliti|\\b"
-politics_pat = pattern_start + ( "\\b|\\b".join(politics_list) ) + "\\b"
+politics_pat = load_word_pattern('politics.dat', "\\bpoliti|")
 politics_re = re.compile(politics_pat)
 
-sex_list = load_word_list('sex.dat')
-pattern_start = "\\bsex[^t][^ *]\\b|\\b"
-sex_pat = pattern_start + ( "\\b|\\b".join(sex_list) ) + "\\b"
+sex_pat = load_word_pattern('sex.dat', "\\bsex[^t]|")
 sex_re = re.compile(sex_pat)
 
-ethnicity_list = load_word_list('ethnicity.dat')
-pattern_start = "\\bethn|\\b"
-ethno_pat = pattern_start + ( "\\b|\\b".join(ethnicity_list) ) + "\\b"
+ethno_pat = load_word_pattern('ethnicity.dat', "\\bethn|")
 ethno_re = re.compile(ethno_pat)
 
-health_list = load_word_list('health.dat')
-pattern_start = "\\bhealth|\\b"
-health_pat = pattern_start + ( "\\b|\\b".join(health_list) ) + "\\b"
+health_pat = load_word_pattern('health.dat', "\\bhealth|")
 health_re = re.compile(health_pat)
-
-econo_list = load_word_list('economics.dat')
-pattern_start = "\\becono|\\bfinan|\\b"
-econo_pat = pattern_start + ( "\\b|\\b".join(econo_list) ) + "\\b"
+ 
+econo_pat = load_word_pattern('economics.dat', "\\becono|\\bfinan|")
 econo_re = re.compile(econo_pat) 
  
-sports_list = load_word_list('sports.dat')
-pattern_start = "\\bathlet\\b|\\b"
-sport_pat = pattern_start + ( "\\b|\\b".join(sports_list) ) + "\\b"
+sport_pat = load_word_pattern('sports.dat', "\\bathlet|")
 sport_re = re.compile(sport_pat)
-
-arts_list = load_word_list('arts.dat')
-pattern_start = "\\bartist|\\b"
-arts_pat = pattern_start + ( "\\b|\\b".join(arts_list) ) + "\\b"
+ 
+arts_pat = load_word_pattern('arts.dat', "\\bartist|")
 arts_re = re.compile(arts_pat)
-  
-family_list = load_word_list('family.dat')
-pattern_start = "\\bfamil\\b|\\b"
-family_pat = pattern_start + ( "\\b|\\b".join(family_list) ) + "\\b"
+
+family_pat = load_word_pattern('family.dat', "\\bfamil|")
 family_re = re.compile(family_pat)
-
-love_list = load_word_list('love.dat')
-pattern_start = "\\bromanc\\b|\\b"
-love_pat = pattern_start + ( "\\b|\\b".join(love_list) ) + "\\b"
+ 
+love_pat = load_word_pattern('love.dat', "\\bromanc|")
 love_re = re.compile(love_pat)
-
-crime_list = load_word_list('crime.dat')
-pattern_start = "\\bcrimina|\\b"
-crime_pat = pattern_start + ( "\\b|\\b".join(crime_list) ) + "\\b"
+ 
+crime_pat = load_word_pattern('crime.dat', "\\bcrimina|")
 crime_re = re.compile(crime_pat)
-
-travel_list = load_word_list('travel.dat')
-pattern_start = "\\btravel|\\b"
-travel_pat = pattern_start + ( "\\b|\\b".join(travel_list) ) + "\\b"
+ 
+travel_pat = load_word_pattern('travel.dat', "\\btravel|")
 travel_re = re.compile(travel_pat)
-
-food_list = load_word_list('food.dat')
-pattern_start = "\\b|\\b"
-food_pat = pattern_start + ( "\\b|\\b".join(food_list) ) + "\\b"
+ 
+food_pat = load_word_pattern('food.dat')
 food_re = re.compile(food_pat)
+ 
+technology_pat = load_word_pattern('technology.dat', "\\btechnol[^t]|")
+
+fashion_pat = load_word_pattern('fashion.dat', "\\bfashion[^i]|")
+
+culture_pat = load_word_pattern('culture.dat', "\\bcultur|")
+
+education_pat = load_word_pattern('education.dat', "\\beducat|")
 
 ########################################################################################
 def add_text_topics_features(df, columns, type="flag"):
@@ -99,7 +83,8 @@ def add_text_topics_features(df, columns, type="flag"):
     rez = df.copy()
     for col in columns:
         if type=="count":
-            rez = add_topic_features(rez, col)
+            rez = add_topic_counts(rez, col)
+            #rez = add_topic_features(rez, col)
         else:
             rez = add_topic_indicators(rez, col)
     return rez
@@ -180,5 +165,30 @@ def add_topic_indicators(df, col):
     df[ col+'_food' ]=0
     df.loc[(df[col].notnull()) & (df[col].str.contains(food_pat)), col+'_food' ]=1
 
+    return df
+
+########################################################################################
+def add_topic_counts(df, col):
+    """
+        Given a pandas dataframe and a column name.
+        Count the number of keywor matches for each topic
+    """
+    df[col+'_religion']=df[col].str.count(religion_pat, flags=re.IGNORECASE)
+    df[col+'_politics']=df[col].str.count(politics_pat, flags=re.IGNORECASE)
+    df[col+'_sex']=df[col].str.count(sex_pat, flags=re.IGNORECASE)
+    df[col+'_ethnicity']=df[col].str.count(ethno_pat, flags=re.IGNORECASE)
+    df[col+'_economics']=df[col].str.count(econo_pat, flags=re.IGNORECASE)
+    df[col+'_health']=df[col].str.count(health_pat, flags=re.IGNORECASE)
+    df[col+'_sport']=df[col].str.count(sport_pat, flags=re.IGNORECASE)
+    df[col+'_arts']=df[col].str.count(arts_pat, flags=re.IGNORECASE)
+    df[col+'_family']=df[col].str.count(family_pat, flags=re.IGNORECASE)
+    df[col+'_love']=df[col].str.count(love_pat, flags=re.IGNORECASE)
+    df[col+'_crime']=df[col].str.count(crime_pat, flags=re.IGNORECASE)
+    df[col+'_travel']=df[col].str.count(travel_pat, flags=re.IGNORECASE)
+    df[col+'_food']=df[col].str.count(food_pat, flags=re.IGNORECASE)
+    df[col+'_technology']=df[col].str.count(technology_pat, flags=re.IGNORECASE)
+    df[col+'_fashion']=df[col].str.count(fashion_pat, flags=re.IGNORECASE)
+    df[col+'_culture']=df[col].str.count(culture_pat, flags=re.IGNORECASE)
+    df[col+'_education']=df[col].str.count(education_pat, flags=re.IGNORECASE)
     return df
 
