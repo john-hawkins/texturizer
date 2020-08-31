@@ -6,7 +6,7 @@ import math
 import os
 import re
 
-from .process import load_word_list
+from .process import load_word_pattern
  
 """
     texturizer.literacy: Personality trait feature flags
@@ -23,19 +23,13 @@ from .process import load_word_list
 
 ########################################################################################
 
-reasoning_list = load_word_list('reasoning.dat') 
-pattern_start = "\\b"
-reasoning_pat = pattern_start  + ( "\\b|\\b".join(reasoning_list) ) + "\\b"
+reasoning_pat = load_word_pattern('reasoning.dat')
 reasoning_re = re.compile(reasoning_pat)
 
-nuance_list = load_word_list('nuance.dat') 
-pattern_start = "\\b"
-nuance_pat = pattern_start  + ( "\\b|\\b".join(nuance_list) ) + "\\b"
+nuance_pat = load_word_pattern('nuance.dat')
 nuance_re = re.compile(nuance_pat)
 
-explain_list = load_word_list('explain.dat') 
-pattern_start = "\\b"
-explain_pat = pattern_start  + ( "\\b|\\b".join(explain_list) ) + "\\b"
+explain_pat = load_word_pattern('explain.dat')
 explain_re = re.compile(explain_pat)
 
 singular_pat = "\\bi\\b|\\bme\\b|\\bmyself\\b|\\bmy\\b|\\bmine\\b"
@@ -43,6 +37,10 @@ singular_re = re.compile(singular_pat)
 
 plural_pat = "\\bwe\\b|\\bus\\b|\\bour\\b|\\bourselves\\b"
 plural_re = re.compile(plural_pat)
+
+cliches_pat = load_word_pattern('cliches.dat')
+
+jargon_pat = load_word_pattern('jargon.dat')
 
 ########################################################################################
 def add_text_personality_features(df, columns):
@@ -52,7 +50,8 @@ def add_text_personality_features(df, columns):
     """
     rez = df.copy()
     for col in columns:
-        rez = add_personality_features(rez, col)
+        rez = add_trait_counts(rez, col)
+    # add_personality_features(rez, col)
     return rez
 
 ########################################################################################
@@ -82,4 +81,19 @@ def add_personality_features(df, col):
     df[[ col+'_reason', col+'_explain', col+'_nuance', col+'_singular', col+'_plural' ]] = df.apply(trait_features, col=col, axis=1, result_type="expand")
 
     return df
- 
+
+
+########################################################################################
+def add_trait_counts(df, col):
+    """
+        Given a pandas dataframe and a column name.
+        Count the number of keyword matches for each trait
+    """
+    df[col+'_reason']=df[col].str.count(reasoning_pat, flags=re.IGNORECASE)
+    df[col+'_explain']=df[col].str.count(explain_pat, flags=re.IGNORECASE)
+    df[col+'_nuance']=df[col].str.count(nuance_pat, flags=re.IGNORECASE)
+    df[col+'_singular']=df[col].str.count(singular_pat, flags=re.IGNORECASE)
+    df[col+'_plural']=df[col].str.count(plural_pat, flags=re.IGNORECASE)
+    df[col+'_cliches']=df[col].str.count(cliches_pat, flags=re.IGNORECASE)
+    df[col+'_jargon']=df[col].str.count(jargon_pat, flags=re.IGNORECASE)
+    return df
