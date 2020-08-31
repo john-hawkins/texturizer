@@ -7,6 +7,7 @@ import os
 import re
 
 from .process import load_word_list
+from .process import load_word_pattern
 
 """
     texturizer.literacy: Literacy feature flags
@@ -18,11 +19,9 @@ from .process import load_word_list
 """
 
 ########################################################################################
-misspelling_list = load_word_list('misspelling.dat') 
-pattern_start = "\\b"
-misspelling_pat = pattern_start  + ( "\\b|\\b".join(misspelling_list) ) + "\\b"
+misspelling_pat = load_word_pattern('misspelling.dat')
 misspelling_re = re.compile(misspelling_pat)
-
+ 
 grammar_pat = "[ '(\"][aA] [AaEeIiOoUu]|[^.][^A-Z]\. [a-z]|\b(\w+)\b \b\1\b"
 grammar_re = re.compile(grammar_pat)
 
