@@ -42,6 +42,9 @@ cliches_pat = load_word_pattern('cliches.dat')
 
 jargon_pat = load_word_pattern('jargon.dat')
 
+authority_pat = load_word_pattern('authority.dat')
+
+
 ########################################################################################
 def add_text_personality_features(df, columns):
     """
@@ -51,7 +54,7 @@ def add_text_personality_features(df, columns):
     rez = df.copy()
     for col in columns:
         rez = add_trait_counts(rez, col)
-    # add_personality_features(rez, col)
+        # add_personality_features(rez, col)
     return rez
 
 ########################################################################################
@@ -96,4 +99,5 @@ def add_trait_counts(df, col):
     df[col+'_plural']=df[col].str.count(plural_pat, flags=re.IGNORECASE)
     df[col+'_cliches']=df[col].str.count(cliches_pat, flags=re.IGNORECASE)
     df[col+'_jargon']=df[col].str.count(jargon_pat, flags=re.IGNORECASE)
+    df[col+'_authority']=df[col].str.count(authority_pat, flags=re.IGNORECASE)
     return df
