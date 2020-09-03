@@ -2,25 +2,29 @@ texturizer
 ----------
 
 ```
-Status - Functional: Initial Working Version for in-memory datasets
-
-TODO:
-
-* Build functionality to process large datasets in chunks.
-* Add capacity to generate features relative to corpus averages
-* Add capacity for comparison features to be generated relative to refence text
-* Add functionality for working with unix shell pipes and streams
-* Improve emoticon handling to demarcate sentiment
-* Improve topic features to be based on external reference lists of unambiguous words
+Status - Functional
 ```
+Initial Working Version for in-memory datasets
 
-This is an application to add features to a dataset that are derived from analysis of
+This is an application to add features to a dataset that are derived from processing
 the content of existing columns of text data.
 
 It will accept a CSV, TSV or XLS file and output an extended version of
 the dataset with additional columns appended. When run with default settings
 it will produce very simple and rapid numerical summaries. Additional feature
 flags unlock deeper NLP based features that are more computationally intensive.
+
+
+### TODO
+
+```
+* Build functionality to process large datasets in chunks.
+* Add capacity to generate features relative to corpus averages
+* Add capacity for comparison features to be generated relative to reference text(s)
+* Add functionality for working with unix shell pipes and streams
+```
+
+### Distribution
 
 Released and distributed via setuptools/PyPI/pip for Python 3.
 

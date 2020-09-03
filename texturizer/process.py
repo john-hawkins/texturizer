@@ -175,7 +175,10 @@ def remove_escapes_and_non_printable(text):
         Apply the codecs escape to decode any escaped characters.
         Then apply a regex to remove any non printable characters
     """
-    new_text0 = codecs.escape_decode(text)[0].decode("utf-8")
+    try:
+        new_text0 = codecs.escape_decode(text)[0].decode("utf-8")
+    except:
+        new_text0 = text
     pattern = "\0|\n|\r|\b|\t|\f|\v"
     new_text1 = re.sub(pattern, " ", new_text0)
     return new_text1
