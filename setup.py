@@ -18,7 +18,7 @@ setup(
     name = "texturizer",
     packages = ["texturizer"],
     install_requires=[
-        'pandas','numpy','jellyfish','textdistance','spacy'
+        'pandas','numpy','jellyfish','textdistance','spacy','textblob'
     ],
     entry_points = {
         "console_scripts": ['texturizer = texturizer.texturizer:main']

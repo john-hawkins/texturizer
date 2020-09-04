@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from textblob import TextBlob
-import pandas as pd 
-import math
-import os
+import numpy as np 
 import re
 
 from .process import load_word_pattern
@@ -58,7 +56,25 @@ def add_text_sentiment_features(df, columns):
     rez = df.copy()
     for col in columns:
         rez = add_sentiment_features(rez, col)
+        rez = add_textblob_features(rez, col)
     return rez
+
+########################################################################################
+def add_textblob_features(df, col):
+    def tb_features(x, col):
+        if x[col]!=x[col]:
+            subjectivity = np.nan
+            polarity = np.nan
+        else:
+            text = ( x[col] )
+            blob = TextBlob(text)
+            subjectivity = blob.sentiment.subjectivity
+            polarity = blob.sentiment.polarity
+        return polarity, subjectivity
+
+    df[[ col+'_tb_polarity', col+'_tb_subjectivity' ]] = df.apply(tb_features, col=col, axis=1, result_type="expand")
+
+    return df
 
 ########################################################################################
 def add_sentiment_features(df, col):
