@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from io import StringIO
 import datetime as dt
 import pkg_resources
 import pandas as pd 
@@ -75,7 +76,7 @@ def start_profile(proc_name):
 def end_profile(proc_name):
     n2 = dt.datetime.now()
     n1 = profiles[proc_name]["start"]
-    total = str(n2-n1)
+    total = n2-n1
     profiles[proc_name]["end"] = n2
     if "total" in profiles[proc_name]:
         curr_total = profiles[proc_name]["total"]
@@ -87,14 +88,14 @@ def print_profiles():
     eprint("Computation Time Profile for each Feature Set")
     eprint("---------------------------------------------")
     for k in profiles.keys():
-        eprint(padded(k), profiles[k]["total"]) 
+        eprint(padded(k), str(profiles[k]["total"]) ) 
 
 def padded(k):
     spacer_len = 20 - len(k)
     return k + (" "*spacer_len)
 
 ########################################################################################
-def process_file_in_chunks(path_to_file, function_to_apply, output_stream):
+def process_file_in_chunks(path_to_file, function_to_apply):
     """
         Given a path to a large dataset we will iteratively load it in chunks and 
         apply the supplied function to and write the result to the output stream.
@@ -103,16 +104,24 @@ def process_file_in_chunks(path_to_file, function_to_apply, output_stream):
     sample_prop = max_filesize / fsize 
     line_count = count_lines(path_to_file)
     chunks = round(line_count * sample_prop)
-    temp = pd.DataFrame()
     data_iterator = pd.read_csv(path_to_file, chunksize=chunks, low_memory=False)
     total_chunks = 0
-    stream = start_stream(output_stream)
     for index, chunk in enumerate(data_iterator, start=0):
         startpoint = 0 + (index*chunks)
         total_chunks = index + 1
         temp = function_to_apply(chunk)
-        write_to_stream(stream, temp)
-
+        if total_chunks==1:
+            print_output(temp, header=True)
+        else:
+            print_output(temp, header=False)
+    
+    eprint("Chunks processed: ", total_chunks)
+ 
+########################################################################################
+def print_output(df, header=True):
+    output = StringIO()
+    df.to_csv(output,index=False, header=header)
+    print(output.getvalue(), end = '')
 
 ########################################################################################
 def extract_file_extension(path_to_file):

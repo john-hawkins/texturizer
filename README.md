@@ -4,8 +4,6 @@ texturizer
 ```
 Status - Functional
 ```
-Initial Working Version for in-memory datasets
-
 This is an application to add features to a dataset that are derived from processing
 the content of existing columns of text data.
 
@@ -18,10 +16,11 @@ flags unlock deeper NLP based features that are more computationally intensive.
 ### TODO
 
 ```
-* Build functionality to process large datasets in chunks.
+
 * Add capacity to generate features relative to corpus averages
 * Add capacity for comparison features to be generated relative to reference text(s)
-* Add functionality for working with unix shell pipes and streams
+* Investigate functionality for working with unix shell pipes and streams
+
 ```
 
 ### Distribution

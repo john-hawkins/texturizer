@@ -3,15 +3,18 @@
 """ texturizer.texturizer: provides entry point main()."""
  
 __version__ = "0.1.0"
-from io import StringIO
 import pandas as pd
 import sys
 import os
 
 from .process import load_complete_dataframe
+from .process import process_file_in_chunks
 from .process import initialise_profile
 from .process import print_profiles
+from .process import print_output
+
 from .featurize import generate_feature_function
+
 from .config import max_filesize
  
 def main():
@@ -36,16 +39,11 @@ def main():
             simple = feature_func(df)
             print_output( simple )
         else:
-            print("Oversize data - This functionality is not yet built")
+            process_file_in_chunks(params["dataset"], feature_func)
 
         print_profiles()
 
-#############################################################
-def print_output(df):
-    output = StringIO()
-    df.to_csv(output,index=False)
-    print(output.getvalue())
- 
+
 #############################################################
 def get_cmd_line_params(argv):
     """ parse out the option from an array of command line arguments """
