@@ -5,19 +5,16 @@ import pkg_resources
 import pandas as pd 
 import numpy as np
 import codecs
-import math
 import sys
 import os
 import re
 
 from .config import max_filesize
- 
-"""
-    texturizer.process: Functions for iteratively processing a large dataset
-                        in chunks to add the features.
 
-    The goal of this module is to permit the feature generation to be done
-    on files larger than the memory by processing in chunks.
+"""
+    texturizer.process: Support functions for the texturizer package.
+                        Including functions for loading word lists, logging processing times,
+                        and iteratively processing a large dataset in chunks.
 """
 ########################################################################################
 resource_package = __name__
@@ -54,8 +51,11 @@ def load_word_pattern(filename, prefix="", pluralize=True, bound=True, escape=Fa
     pattern = pattern_start  + ( joiner.join(word_list) ) + tail
     return pattern
 
-
 ########################################################################################
+"""
+   This is a set of functions to allow the application to print time
+   profiles of the various feature engines to STDERR.
+"""
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -67,14 +67,21 @@ def initialise_profile():
 
 def start_profile(proc_name):
     n1=dt.datetime.now()
-    profiles[proc_name] = {"start":n1}
+    if proc_name in profiles:
+        profiles[proc_name]["start"] = n1
+    else:
+        profiles[proc_name] = {"start":n1}
 
 def end_profile(proc_name):
     n2 = dt.datetime.now()
     n1 = profiles[proc_name]["start"]
     total = str(n2-n1)
     profiles[proc_name]["end"] = n2
-    profiles[proc_name]["total"] = total
+    if "total" in profiles[proc_name]:
+        curr_total = profiles[proc_name]["total"]
+        profiles[proc_name]["total"] = curr_total + total
+    else:
+        profiles[proc_name]["total"] = total
 
 def print_profiles():
     eprint("Computation Time Profile for each Feature Set")
@@ -145,8 +152,9 @@ def count_lines(path_to_file):
 ########################################################################################
 def len_or_null(val):
     """ 
-       Alternative len function that will simply return numpy.NA for invalid values 
-       This is need to get sensible results when running len over a column that may contain nulls
+       Alternative len function that will simply return numpy.NA 
+       for invalid values. This is needed to get sensible results 
+       when running len over a column that may contain nulls
     """
     try:
         return len(val)
@@ -167,6 +175,16 @@ def remove_urls_and_tags(text):
     new_text = text
     for p in patterns:
         new_text = re.sub(p, ' ', new_text)
+    return new_text
+
+def remove_urls(text):
+    pattern = "https?://[-._a-z0-9A-Z]*"
+    new_text = re.sub(pattern, ' ', text)
+    return new_text
+
+def remove_tags(text):
+    pattern = "</?[a-zA-Z]* ?[a-zA-Z'=.]* ?/?>"
+    new_text = re.sub(pattern, ' ', text)
     return new_text
 
 ########################################################################################
