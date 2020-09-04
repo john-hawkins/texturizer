@@ -1,0 +1,3 @@
+#!/bin/bash
+# THIS FILE IS REQUIRED BECAUSE YOU NEED TO INSTALL A SPECIFIC SPACY MODEL
+sudo python3 -m spacy download en
