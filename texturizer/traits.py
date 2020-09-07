@@ -9,7 +9,7 @@ import re
 from .process import load_word_pattern
  
 """
-    texturizer.literacy: Personality trait feature flags
+    texturizer.traits: Personality trait feature flags
 
     This module performs word or phrase matching to generate features 
     that can be indicative of personailuty traits in a writer or speaker.
@@ -38,16 +38,10 @@ singular_re = re.compile(singular_pat)
 plural_pat = "\\bwe\\b|\\bus\\b|\\bour\\b|\\bourselves\\b"
 plural_re = re.compile(plural_pat)
 
-cliches_pat = load_word_pattern('cliches.dat')
-
-jargon_pat = load_word_pattern('jargon.dat')
-
-authority_pat = load_word_pattern('authority.dat')
-
 quotation_pat = "\"[ a-zA-Z0-9.,?!:;']*\""
 
 ########################################################################################
-def add_text_personality_features(df, columns):
+def add_text_trait_features(df, columns):
     """
         Given a pandas dataframe and a set of column names.
         calculate the personality trait features and add them.
@@ -55,37 +49,7 @@ def add_text_personality_features(df, columns):
     rez = df.copy()
     for col in columns:
         rez = add_trait_counts(rez, col)
-        # add_personality_features(rez, col)
     return rez
-
-########################################################################################
-def add_personality_features(df, col):
-    """
-        Given a pandas dataframe and a column name.
-        add simple text match features for personality traits.
-    """
-
-    def trait_features(x, col):
-        reasoning = 0
-        explain = 0
-        nuance = 0
-        singular = 0
-        plural = 0
-        if x[col]!=x[col]:
-            reasoning = 0
-        else:
-            text = (x[col].lower())
-            reasoning = len(reasoning_re.findall(text))
-            explain = len(explain_re.findall(text))
-            nuance = len(nuance_re.findall(text))
-            singular = len(singular_re.findall(text))
-            plural = len(plural_re.findall(text))
-        return reasoning, explain, nuance, singular, plural
-
-    df[[ col+'_reason', col+'_explain', col+'_nuance', col+'_singular', col+'_plural' ]] = df.apply(trait_features, col=col, axis=1, result_type="expand")
-
-    return df
-
 
 ########################################################################################
 def add_trait_counts(df, col):
@@ -98,8 +62,6 @@ def add_trait_counts(df, col):
     df[col+'_nuance']=df[col].str.count(nuance_pat, flags=re.IGNORECASE)
     df[col+'_singular']=df[col].str.count(singular_pat, flags=re.IGNORECASE)
     df[col+'_plural']=df[col].str.count(plural_pat, flags=re.IGNORECASE)
-    df[col+'_cliches']=df[col].str.count(cliches_pat, flags=re.IGNORECASE)
-    df[col+'_jargon']=df[col].str.count(jargon_pat, flags=re.IGNORECASE)
-    df[col+'_authority']=df[col].str.count(authority_pat, flags=re.IGNORECASE)
     df[col+'_quotations']=df[col].str.count(quotation_pat, flags=re.IGNORECASE)
     return df
+

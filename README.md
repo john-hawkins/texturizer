@@ -4,6 +4,7 @@ texturizer
 ```
 Status - Functional
 ```
+
 This is an application to add features to a dataset that are derived from processing
 the content of existing columns of text data.
 
@@ -52,6 +53,7 @@ Each type of feature can be unlocked through the use of a specific command line 
 * -pos. Part of speech proportions in the text.
 * -literacy. Checks for common literacy markers.
 * -traits. Checks for common stylistic elements or traits that suggest personality type.
+* -rhetoric. Checks for rhetorical devices used for persuasion
 * -profanity. Profanity check flags.
 * -sentiment. Sentiment word counts and score.
 * -emoticons. Emoticon check flags.
@@ -65,23 +67,25 @@ Use the runner without installing the application.
 The following example will generate all features on the test data.
 
 ```
-./texturizer-runner.py -columns=question,answer -pos -literacy -traits -profanity -emoticons -sentiment -comparison -topics=count data/test.csv > data/output.csv
+./texturizer-runner.py -columns=question,answer -pos -literacy -traits -rhetoric -profanity -emoticons -sentiment -comparison -topics=count data/test.csv > data/output.csv
 ```
 
 This will send the time performance profile to STDERR as shown below:
 ```
 Computation Time Profile for each Feature Set
 ---------------------------------------------
-simple               0:00:00.521356
-comparison           0:00:00.460415
-profanity            0:00:00.461585
-sentiment            0:00:01.429136
-emoticons            0:00:00.373074
-topics               0:00:02.685745
-traits               0:00:02.082641
-pos                  0:00:20.773449
-literacy             0:00:00.481656
+simple               0:00:00.580910
+comparison           0:00:00.490972
+profanity            0:00:00.507172
+sentiment            0:00:03.611817
+emoticons            0:00:00.387556
+topics               0:00:02.778537
+traits               0:00:00.262633
+rhetoric             0:00:02.107620
+pos                  0:00:22.130724
+literacy             0:00:00.488886
 ```  
+
 As you can see the part of speech (POS) features are the most time 
 consuming to generate. It is worth avoiding them on very large datasets.
 

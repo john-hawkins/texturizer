@@ -57,6 +57,7 @@ def get_cmd_line_params(argv):
               "topics":False, 
               "count_matches":False, 
               "traits":False, 
+              "rhetoric":False, 
               "pos":False, 
               "literacy":False, 
               "comparison":False, 
@@ -77,6 +78,8 @@ def get_cmd_line_params(argv):
                     result["count_matches"]=True
         if parts[0] == "-traits":
             result["traits"]=True
+        if parts[0] == "-rhetoric":
+            result["rhetoric"]=True
         if parts[0] == "-pos":
             result["pos"]=True
         if parts[0] == "-emoticons":
@@ -101,6 +104,7 @@ def print_usage(args):
     print("  -columns=<COMMA SEPARATED LIST>. Default: apply to all string columns.")
     print("  -topics OR -topics=count. Default: False. Match words from common topics (or count matches).")
     print("  -traits Default: False. Word usage for personality traits.")
+    print("  -rhetoric Default: False. Word usage for rhetorical devices.")
     print("  -pos Default: False. Part of speech proportions.")
     print("  -literacy Default: False. Checks for common literacy markers.")
     print("  -profanity Default: False. Profanity check flags.")
