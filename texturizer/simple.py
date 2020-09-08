@@ -63,6 +63,7 @@ def add_text_features(df, col):
     df[ get_simple_col_list(col) ] = df.apply(cal_features, col=col, axis=1, result_type="expand")
 
     return df
+
 ########################################################################################
 def get_simple_col_list(col):
     return [col+'_wc', col+'_avg_wl', col+'_cwd', col+'_caps']
