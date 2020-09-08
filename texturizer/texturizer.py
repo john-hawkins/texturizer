@@ -101,7 +101,7 @@ def print_usage(args):
     print(args[0], " [ARGS] <PATH TO DATASET>")
     print("  <PATH TO DATASET> - Supported file types: csv, tsv, xls, xlsx, odf")
     print(" [ARGS] In most cases these are switches that turn on the feature type")
-    print("  -columns=<COMMA SEPARATED LIST>. Default: apply to all string columns.")
+    print("  -columns=<COMMA SEPARATED LIST>. REQUIRED")
     print("  -topics OR -topics=count. Default: False. Match words from common topics (or count matches).")
     print("  -traits Default: False. Word usage for personality traits.")
     print("  -rhetoric Default: False. Word usage for rhetorical devices.")
