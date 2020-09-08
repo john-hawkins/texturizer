@@ -60,9 +60,12 @@ def add_text_features(df, col):
             content_wd = len(non_stop_words)/len(word_array)
         return word_count, avg_word_len, content_wd, capital_d, text
 
-    df[[col+'_wc', col+'_avg_wl', col+'_cwd', col+'_caps', col+'_cleaned']] = df.apply(cal_features, col=col, axis=1, result_type="expand")
+    df[ get_simple_col_list(col) ] = df.apply(cal_features, col=col, axis=1, result_type="expand")
 
     return df
+########################################################################################
+def get_simple_col_list(col):
+    return [col+'_wc', col+'_avg_wl', col+'_cwd', col+'_caps', col+'_cleaned']
 
 ########################################################################################
 def null_tolerant_len(x):

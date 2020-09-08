@@ -6,6 +6,8 @@ import re
 
 from .process import load_word_list
 from .process import load_word_pattern
+from .process import remove_urls_and_tags
+from .process import remove_escapes_and_non_printable
 
 smiles = load_word_list("emoticons-smile.dat")
 laughs = load_word_list("emoticons-laugh.dat")
@@ -89,7 +91,7 @@ def add_emoticon_features(df, col):
         shock = 0 
         sceptic = 0 
         if x[col]==x[col]:
-            text = x[col + "_cleaned"] 
+            text = remove_urls_and_tags( remove_escapes_and_non_printable( x[col] ) )
             matches = fwd_re.findall(text)
             bck_matches = bck_re.findall(text)
             if len(matches)>0 or len(bck_matches)>0:
@@ -117,36 +119,15 @@ def add_emoticon_features(df, col):
                     happycry = 1
         pos = smiley + wink + kiss + happycry + laugh + cheeky
         neg = crying + sad + shock + sceptic
-        return emos,smiley,wink,kiss,happycry,laugh,cheeky,crying,sad,shock,sceptic,pos,neg
-
-    df[[col+'_emoticons', col+'_emo_smiley', col+'_emo_wink', col+'_emo_kiss', col+'_emo_happycry', col+'_emo_laugh', col+'_emo_cheeky', col+'_emo_cry', col+'_emo_sad', col+'_emo_shock', col+'_emo_sceptic', col+'_emo_pos', col+'_emo_neg']] = df.apply(cal_features, col=col, axis=1, result_type="expand")
-
-    df[col+'_emo_sentiment'] = (df[col+'_emo_pos'] - df[col+'_emo_neg'] )
+        sent = pos - neg
+        return emos,smiley,wink,kiss,happycry,laugh,cheeky,crying,sad,shock,sceptic,pos,neg,sent
+ 
+    df[ get_emoticon_col_list(col) ] = df.apply(cal_features, col=col, axis=1, result_type="expand")
 
     return df
 
 ########################################################################################
-def remove_urls_and_tags(text):
-    """
-        Necessary to avoid common false positive emoticon matches
-    """
-    patterns = ["https?://[-._a-z0-9A-Z]*","</?[a-zA-Z]* ?[a-zA-Z'=.]* ?/?>","\\[tnrf]"]
-    new_text = text
-    for p in patterns:
-        new_text = re.sub(p, ' ', new_text)
-    return new_text
-
-def remove_escapes_and_non_printable(text):
-    new_text0 = codecs.escape_decode(text)[0].decode("utf-8")
-    pattern = "\0|\n|\r|\b|\t|\f|\v"
-    new_text1 = re.sub(pattern, " ", new_text0)
-    return new_text1
-
-########################################################################################
-def null_tolerant_len(x):
-    if x != x:
-        return 0
-    else:
-        return len(x)
+def get_emoticon_col_list(col):
+    return [col+'_emoticons', col+'_emo_smiley', col+'_emo_wink', col+'_emo_kiss', col+'_emo_happycry', col+'_emo_laugh', col+'_emo_cheeky', col+'_emo_cry', col+'_emo_sad', col+'_emo_shock', col+'_emo_sceptic', col+'_emo_pos', col+'_emo_neg', col+'_emo_sentiment'] 
 
 
