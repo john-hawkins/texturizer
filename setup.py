@@ -20,6 +20,7 @@ setup(
     install_requires=[
         'pandas','numpy','jellyfish','textdistance','spacy','textblob'
     ],
+    include_package_data=True,
     entry_points = {
         "console_scripts": ['texturizer = texturizer.texturizer:main']
         },
