@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import spacy
-nlp = spacy.load("en_core_web_sm")
+from .process import eprint
+
+try:
+   nlp = spacy.load("en_core_web_sm")
+except:
+   eprint(" * WARNING: POS features require the SpaCY language model : en_core_web_sm")
 
 """
     texturizer.pos Part of Speech features using spaCy
