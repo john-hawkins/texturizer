@@ -117,9 +117,8 @@ python setup.py install
 pip install texturizer
 ```
 
-You will then need to run the [POST_INSTALL.sh](POST_INSTALL.sh) script to install
-the required Spacy Model (otherwise the POS features cannot be calculated).
-
+You will then need to run the [POST INSTALL SCRIPT](https://github.com/john-hawkins/texturizer/blob/master/POST_INSTALL.sh) to install the required Spacy Model (otherwise the POS features cannot be calculated).
+ 
 
 Now, the ``texturizer`` command is available::
 
@@ -127,8 +126,8 @@ Now, the ``texturizer`` command is available::
 texturizer -columns=question,answer -topics data/test.csv > data/output.csv
 ```
 
-This will produce take the [Input CSV](data/test.csv), add simple summary columns and 
+This will take the Input CSV, calculate some simple summary features and 
 produce an Output CSV with features appended as new columns.
 
-For more complicated features see the additional options.
+For more complicated features see the additional options (outlined above).
 
