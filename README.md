@@ -6,17 +6,23 @@ Status - Functional
 ```
 
 This is an application to add features to a dataset that are derived from processing
-the content of existing columns of text data.
+the content of existing columns of text data. It is specifically designed for adding
+somewhat bespoke and unusual features that are not particularly well identified by
+n-gram or word embedding approaches.
 
 It will accept a CSV, TSV or XLS file and output an extended version of
 the dataset with additional columns appended. When run with default settings
-it will produce very simple and rapid numerical summaries. Additional feature
-flags unlock deeper NLP based features that are more computationally intensive.
+it will produce a small number of very simple numerical summaries. 
+
+Additional feature flags unlock features that are more computationally intensive and
+generally domain specific.
 
 
 ### TODO
 
 ```
+Current features are all derived from single records. Future development will add these
+in some sense relative to a corpus.
 
 * Add capacity to generate features relative to corpus averages
 * Add capacity for comparison features to be generated relative to reference text(s)
