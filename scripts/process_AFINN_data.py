@@ -1,3 +1,5 @@
+import pandas as pd
+
 path_to_file = "~/Downloads/AFINN/AFINN-111.txt"
 
 df = pd.read_csv(path_to_file, sep="\t", header=None)

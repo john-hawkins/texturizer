@@ -16,22 +16,6 @@ def add_comparison_features(df,columns):
     return add_string_match_features(df,columns)
 
 #################################################################################
-def add_embedded_cosine_similarity_features(df, title_col, abstract_col, crit, suffix):
-    """
-    Return a copy of a dataframe with features added that represent the difference
-    between the word embedding vectors for the abstracts and the specified criteria.
-    """
-    df_new = df.copy()
-    crit_vector = te.vectorize_text(crit)
-    def embedding_diff(x, col):
-        raw_text = x[col].lower()
-        vector = te.vectorize_text(raw_text)
-        return get_cosine_sim(crit_vector, vector)
-    df_new['abstract_embedding_diff_'+suffix ] = df_new.apply(embedding_diff, col=abstract_col, axis=1)
-    return df_new
-
-
-#################################################################################
 def add_string_match_features(df,columns):
     """
     Return a copy of a dataframe with features describing matching
