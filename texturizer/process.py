@@ -90,8 +90,8 @@ def print_profiles():
     for k in profiles.keys():
         eprint(padded(k), str(profiles[k]["total"]) ) 
 
-def padded(k):
-    spacer_len = 20 - len(k)
+def padded(k, padto=20):
+    spacer_len = padto - len(k)
     return k + (" "*spacer_len)
 
 ########################################################################################
