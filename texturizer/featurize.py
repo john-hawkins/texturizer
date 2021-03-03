@@ -22,6 +22,10 @@ from .comparison import add_comparison_features
 ########################################################################################
 
 def process_df(df, params):
+    """ 
+    process_df: Function that co-ordinates the process of generating the features
+    
+    """ 
     start_profile("simple")
     simple = add_text_summary_features( df, params["columns"] )
     end_profile("simple")

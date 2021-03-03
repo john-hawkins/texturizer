@@ -18,6 +18,10 @@ from .featurize import generate_feature_function
 from .config import max_filesize
  
 def main():
+    """Main texturizer application entry point.
+       parses out CL options and determine the size of the file.
+       Then process the file for the requested features
+    """
     if len(sys.argv) < 2:
         print("ERROR: MISSING ARGUMENTS")
         print_usage(sys.argv)
