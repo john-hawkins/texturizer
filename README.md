@@ -4,6 +4,7 @@ texturizer
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/john-hawkins/texturizer/actions/workflows/python-package.yml/badge.svg)](https://github.com/john-hawkins/texturizer/actions/workflows/python-package.yml)
 [![PyPI](https://img.shields.io/pypi/v/texturizer.svg)](https://pypi.org/project/texturizer)
+[![Documentation Status](https://readthedocs.org/projects/texturizer/badge/?version=latest)](https://texturizer.readthedocs.io/en/latest/?badge=latest)
 
 ```
 Status - Functional
