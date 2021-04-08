@@ -39,10 +39,6 @@ in some sense relative to a corpus.
 
 Released and distributed via setuptools/PyPI/pip for Python 3.
 
-Built using the
-[bootstrap cmdline template](https://github.com/jgehrcke/python-cmdline-bootstrap)
- by [jgehrcke](https://github.com/jgehrcke)
-
 
 ### Resources & Dependencies
 
@@ -135,4 +131,11 @@ This will take the Input CSV, calculate some simple summary features and
 produce an Output CSV with features appended as new columns.
 
 For more complicated features see the additional options (outlined above).
+
+# Acknowledgements
+
+Python package built using the
+[bootstrap cmdline template](https://github.com/jgehrcke/python-cmdline-bootstrap)
+ by [jgehrcke](https://github.com/jgehrcke)
+
 
