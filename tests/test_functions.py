@@ -23,8 +23,8 @@ def test_extract_file_extension():
 
 
 def test_count_lines():
-    lines = count_lines("./README.md")
-    assert lines == 137
+    lines = count_lines("./tests/EXAMPLE.txt")
+    assert lines == 5
 
 
 def test_isNaN():

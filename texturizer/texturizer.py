@@ -2,7 +2,6 @@
  
 """ texturizer.texturizer: provides entry point main()."""
  
-__version__ = "0.1.1"
 import pandas as pd
 import sys
 import os
