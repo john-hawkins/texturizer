@@ -1,6 +1,10 @@
 Usage Guide
 ===========
 
+
+Command Line Utility
+^^^^^^^^^^^^^^^^^^^^
+
 Texturizer can be invoked from the command line:
 
 .. code-block:: bash
@@ -33,4 +37,19 @@ Without parameters it will print out an error and the following usage :
 The list of columns to process and the path to the dataset are both mandatory.
 
 The rest of the options turn on or off particular groups of features.
+
+Python Package Usage
+^^^^^^^^^^^^^^^^^^^^
+
+You can import the texturize package within python and then make use of the
+SciKit Learn Compatible Transformer for your ML Pipeline.
+In the example below we initialise a TextTransform object that will generate
+the part of speech (pos), sentiment an topics indicator variables for any
+dataframe that has a column of text named 'TEXT_COL_NAME'
+
+.. code-block:: python
+
+    import texturizer as txzr
+    textTransformer = txzr.TextTransform(['TEXT_COL_NAME'],['pos','sentiment','topics'])
+
 

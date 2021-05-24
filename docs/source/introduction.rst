@@ -18,9 +18,12 @@ in a model and it is not always clear what is likely to work.
 This package is intended to provide a quick, as well as easily extensible framework to
 add columns to a dataset using a wide variety of feature engineering approaches.
 
+It can be as either a CLI utility to process a tabular dataset, or as python package
+that can be included within your ML projects. We include a SciKit Learn Compatible
+Transformer for using in machine learning pipelines.
 
 Limitations
 ***********
 
-- The vast majority of these features are managed via RegEx patterns.
-
+- The vast majority of these features are managed via RegEx patterns. This allows you to extend
+  or change the behaviour. But it limits you to preefined features.

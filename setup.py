@@ -15,6 +15,7 @@ with open("README.md", "rb") as f:
     long_descr = f.read().decode("utf-8")
 
 setup(
+      license="MIT",
       name = "texturizer",
       packages = ["texturizer"],
       install_requires=[
@@ -29,11 +30,10 @@ setup(
       long_description = long_descr,
       long_description_content_type='text/markdown',
       author = "John Hawkins",
-      author_email = "hawkins.john.c@gmail.com",
-      license="MIT",
-      url = "https://john-hawkins.github.io/posts/2020/09/exploring-diverse-text-derived-features-for-machine-learning/",
+      author_email = "johnc@getting-data-science-done.com",
+      url = "http://john-hawkins.github.io",
       project_urls = {
-          'Documentation': 'https://john-hawkins.github.io/posts/2020/09/exploring-diverse-text-derived-features-for-machine-learning/',
+          'Documentation': "http://texturizer.readthedocs.io",
           'Source': 'https://github.com/john-hawkins/texturizer',
           'Tracker': 'https://github.com/john-hawkins/texturizer/issues',
       },
