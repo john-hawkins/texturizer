@@ -22,6 +22,9 @@ it will produce a small number of very simple numerical summaries.
 Additional feature flags unlock features that are more computationally intensive and
 generally domain specific.
 
+Released and distributed via setuptools/PyPI/pip for Python 3.
+
+Additional detail available in the [documentation](https://texturizer.readthedocs.io)
 
 ### TODO
 
