@@ -19,7 +19,7 @@ setup(
       name = "texturizer",
       packages = ["texturizer"],
       install_requires=[
-        'pandas','numpy','jellyfish','textdistance','spacy','textblob'
+        'pandas','numpy','sklearn','jellyfish','textdistance','spacy','textblob'
       ],
       include_package_data=True,
       entry_points = {
