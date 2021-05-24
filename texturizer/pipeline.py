@@ -40,11 +40,11 @@ class TextTransform(TransformerMixin, BaseEstimator):
         return rez 
 
 
-#############################################################
-    def generate_feature_config(self, columns, params)
+    #############################################################
+    def generate_feature_config(self, columns, params):
         """
-        We need the params in a particular data structure for the
-        processing function to recognize. 
+        We need to process the params into a particular data structure 
+        for the dataframe processing function to recognize. 
         """
         result = {
               "columns":columns,
