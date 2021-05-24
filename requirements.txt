@@ -5,3 +5,4 @@ textdistance
 pytest>=6.0.1
 sklearn
 spacy
+textblob
