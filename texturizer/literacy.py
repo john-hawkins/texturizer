@@ -12,9 +12,9 @@ from .process import load_word_pattern
 """
     texturizer.literacy: Literacy feature flags
 
-    Simple word matching to generate features for common literacy problems,
-    this includes typos or spelling mistakes and some simple grammar problems
-    like not capitalizing the first word of a sentence.
+    Simple word matching to generate features for common literacy problems.
+    This includes typos or spelling mistakes and some simple grammar problems,
+    for example, not capitalizing the first word of a sentence.
 
 """
 

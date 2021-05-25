@@ -63,8 +63,8 @@ def add_text_sentiment_features(df, columns):
 def add_textblob_features(df, col):
     def tb_features(x, col):
         if x[col]!=x[col]:
-            subjectivity = np.nan
-            polarity = np.nan
+            subjectivity = 0.0 #np.nan
+            polarity = 0.0     #np.nan
         else:
             text = ( x[col] )
             blob = TextBlob(text)
@@ -83,8 +83,8 @@ def add_sentiment_features(df, col):
         add simple text match features for sentiment.
     """
     wc_col = col+'_wc' # This is ALWAYS computed first
-    df[col+'_positive']  = df[col].str.count(positive_pat, flags=re.IGNORECASE)
-    df[col+'_negative']  = df[col].str.count(negative_pat, flags=re.IGNORECASE)
+    df[col+'_positive']  = df[col].str.count(positive_pat, flags=re.IGNORECASE).fillna(0)
+    df[col+'_negative']  = df[col].str.count(negative_pat, flags=re.IGNORECASE).fillna(0)
     df[col+'_sentiment'] = (df[col+'_positive'] - df[col+'_negative'] )/df[wc_col]
 
     return df 

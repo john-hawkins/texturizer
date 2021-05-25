@@ -22,6 +22,7 @@ class TextTransform(TransformerMixin, BaseEstimator):
         self.columns = columns
         self.config = self.generate_feature_config(columns, transforms)
         self.func = generate_feature_function(self.config)
+        
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -36,6 +37,10 @@ class TextTransform(TransformerMixin, BaseEstimator):
         # Might need this later 
         #if X.__class__.__name__ == "DataFrame":
         #    X = X.values
+
+        # REMOVE THE TEXT COLUMNS -- PARAMETERIZE THIS LATER
+        for col in self.columns:
+            rez.drop(col, inplace=True, axis=1)
 
         return rez 
 

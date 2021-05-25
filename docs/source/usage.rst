@@ -44,12 +44,24 @@ Python Package Usage
 You can import the texturize package within python and then make use of the
 SciKit Learn Compatible Transformer for your ML Pipeline.
 In the example below we initialise a TextTransform object that will generate
-the part of speech (pos), sentiment an topics indicator variables for any
+the literacy and topics indicator variables for any
 dataframe that has a column of text named 'TEXT_COL_NAME'
+
 
 .. code-block:: python
 
-    import texturizer as txzr
-    textTransformer = txzr.TextTransform(['TEXT_COL_NAME'],['pos','sentiment','topics'])
+    from texturizer.pipeline import TextTransform
+    from sklearn.linear_model import SGDClassifier
+    from sklearn.pipeline import Pipeline
 
+    pipeline = Pipeline([
+        ('texttransform', TextTransform(['TEXT_COL_NAME'],['literacy','topics']) ),
+        ('clf', SGDClassifier(loss='log') ),
+    ])
 
+Note that the transformer version of texturizer will remove the original text columns
+so that the resulting data set can be fed into an algorithm that requires numerical 
+columns only. This means that if you need to do any other text feature engineering it
+be placed earlier in the pipeline.
+
+ 
