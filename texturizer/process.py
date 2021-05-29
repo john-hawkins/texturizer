@@ -5,6 +5,7 @@ import datetime as dt
 import pkg_resources
 import pandas as pd 
 import numpy as np
+import json
 import codecs
 import sys
 import os
@@ -20,6 +21,17 @@ from .config import max_filesize
 ########################################################################################
 resource_package = __name__
 
+def load_dictionary(filename, escape=False):
+    """
+    Utility function to load a json serialised dictionary
+    """
+    _path = '/'.join(('data', filename))
+    rawd = pkg_resources.resource_string(resource_package, _path).decode("utf-8")
+    if escape:
+        rawd = re.escape(rawd)
+    return json.loads(str(rawd)) 
+
+########################################################################################
 def load_word_list(filename, escape=False):
     """
     Utility function to load topic vocab word lists for pattern matching.

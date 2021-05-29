@@ -62,6 +62,7 @@ class TextTransform(TransformerMixin, BaseEstimator):
               "rhetoric":False,
               "pos":False,
               "literacy":False,
+              "scarcity":False,
               "comparison":False,
               "embedding":False
         }
@@ -69,6 +70,8 @@ class TextTransform(TransformerMixin, BaseEstimator):
            result["profanity"]=True
         if "sentiment" in params:
            result["sentiment"]=True
+        if "scarcity" in params:
+           result["scarcity"]=True
         if "emoticons" in params:
            result["emoticons"]=True
         if "topics" in params:

@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import math
 import os
+import re
 
 from .process import remove_escapes_and_non_printable
 from .process import remove_urls_and_tags
@@ -43,22 +44,34 @@ def add_text_features(df, col):
     def cal_features(x, col):
         if x[col]!=x[col]:
             word_count = 0 
+            sentence_count = 0 
+            line_count = 0 
             avg_word_len = 0 
+            max_word_len = 0
+            avg_sentence_len = 0 
             content_wd = 0 
             capital_d = 0
+            punct_d = 0
             text = ""
         else:
             text = remove_urls_and_tags( remove_escapes_and_non_printable( x[col] ) )
             chars = null_tolerant_len(x[col])
             capitals = sum(1 for c in x[col] if c.isupper())
+            punct = sum(1 for c in x[col] if c in ['.','!','?',':',';','-',','])
             capital_d = capitals/chars
+            punct_d = punct/chars
             word_array = x[col].lower().split()
+            sentence_array = [ x for x in re.split("[.?]", x[col].lower()) if x]
+            line_array = [ x for x in re.split("[\r\n]*", x[col].lower()) if x]
             non_stop_words = list(set(word_array) - set(stop_word_list))
             word_count = len(word_array)
+            sentence_count = len(sentence_array)
+            line_count = len(line_array)
             word_lengths = list(map(len, word_array))
+            max_word_len = max(word_lengths)
             avg_word_len = sum(word_lengths)/word_count
             content_wd = len(non_stop_words)/len(word_array)
-        return word_count, avg_word_len, content_wd, capital_d
+        return word_count, sentence_count, line_count, avg_word_len, max_word_len, content_wd, capital_d, punct_d
 
     df[ get_simple_col_list(col) ] = df.apply(cal_features, col=col, axis=1, result_type="expand")
 
@@ -66,7 +79,7 @@ def add_text_features(df, col):
 
 ########################################################################################
 def get_simple_col_list(col):
-    return [col+'_wc', col+'_avg_wl', col+'_cwd', col+'_caps']
+    return [col+'_wc', col+'_sc', col+'_lc', col+'_avg_wl', col+'_max_wl', col+'_cwd', col+'_caps', col+'_punc']
 
 ########################################################################################
 def null_tolerant_len(x):

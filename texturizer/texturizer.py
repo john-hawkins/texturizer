@@ -63,6 +63,7 @@ def get_cmd_line_params(argv):
               "rhetoric":False, 
               "pos":False, 
               "literacy":False, 
+              "scarcity":False, 
               "comparison":False, 
               "embedding":False
     }
@@ -72,6 +73,8 @@ def get_cmd_line_params(argv):
             result["literacy"]=True
         if parts[0] == "-profanity":
             result["profanity"]=True
+        if parts[0] == "-scarcity":
+            result["scarcity"]=True
         if parts[0] == "-sentiment":
             result["sentiment"]=True
         if parts[0] == "-topics":
@@ -112,6 +115,7 @@ def print_usage(args):
     print("  -literacy Default: False. Checks for common literacy markers.")
     print("  -profanity Default: False. Profanity check flags.")
     print("  -sentiment Default: False. Words counts for positive and negative sentiment.")
+    print("  -scarcity Default: False. Words scarcity statistics.")
     print("  -emoticons Default: False. Emoticon check flags.")
     print("  -comparison Default: False. Cross-column comparisons.")
     print("")

@@ -15,7 +15,8 @@ from .sentiment import add_text_sentiment_features
 from .literacy import add_text_literacy_features
 from .emoticons import add_text_emoticon_features
 from .comparison import add_comparison_features
- 
+from .scarcity import add_scarcity_features
+
 """
     texturizer.featurize: Core functions to apply a set of features to a data frame.
 """
@@ -41,6 +42,10 @@ def process_df(df, params):
         start_profile("sentiment")
         simple = add_text_sentiment_features( simple, params["columns"] )
         end_profile("sentiment")
+    if params["scarcity"] :
+        start_profile("scarcity")
+        simple = add_scarcity_features( simple, params["columns"] )
+        end_profile("scarcity")
     if params["emoticons"] :
         start_profile("emoticons")
         simple = add_text_emoticon_features( simple, params["columns"] )
