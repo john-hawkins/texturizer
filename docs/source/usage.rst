@@ -30,6 +30,7 @@ Without parameters it will print out an error and the following usage :
      -literacy Default: False. Checks for common literacy markers.
      -profanity Default: False. Profanity check flags.
      -sentiment Default: False. Words counts for positive and negative sentiment.
+     -scarcity Default: False. Word scarcity scores.
      -emoticons Default: False. Emoticon check flags.
      -comparison Default: False. Cross-column comparisons.
 

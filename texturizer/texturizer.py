@@ -115,7 +115,7 @@ def print_usage(args):
     print("  -literacy Default: False. Checks for common literacy markers.")
     print("  -profanity Default: False. Profanity check flags.")
     print("  -sentiment Default: False. Words counts for positive and negative sentiment.")
-    print("  -scarcity Default: False. Words scarcity statistics.")
+    print("  -scarcity Default: False. Word scarcity scores.")
     print("  -emoticons Default: False. Emoticon check flags.")
     print("  -comparison Default: False. Cross-column comparisons.")
     print("")

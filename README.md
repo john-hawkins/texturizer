@@ -66,6 +66,7 @@ Each type of feature can be unlocked through the use of a specific command line 
 * -rhetoric. Checks for rhetorical devices used for persuasion
 * -profanity. Profanity check flags.
 * -sentiment. Sentiment word counts and score.
+* -scarcity. Word scarcity scores.
 * -emoticons. Emoticon check flags.
 * -comparison. Cross-column comparisons using edit distance metrics
 
