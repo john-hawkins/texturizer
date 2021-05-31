@@ -67,7 +67,7 @@ def add_profanity_features(df, col):
             mild_profanity = 0
         else:
             text = (x[col].lower())
-            word_array = text.split()
+            word_array = text.split('\s+')
             hard_profanity = len(hard_re.findall(text))
             mask_profanity = len(masked_re.findall(text))
             if set(mild_profanity_list).intersection(word_array):

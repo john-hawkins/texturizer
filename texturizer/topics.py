@@ -86,53 +86,9 @@ def add_text_topics_features(df, columns, type="flag"):
     for col in columns:
         if type=="count":
             rez = add_topic_counts(rez, col)
-            #rez = add_topic_features(rez, col)
         else:
             rez = add_topic_indicators(rez, col)
     return rez
-
-########################################################################################
-def add_topic_features(df, col):
-    """
-        Given a pandas dataframe and a column name.
-        Count the text matches for topic keywords.
-    """
-
-    def prof_features(x, col):
-        religion_wds = 0
-        sex_wds = 0
-        politics_wds = 0
-        ethno_wds = 0
-        econo_wds = 0
-        health_wds = 0 
-        sport_wds = 0 
-        arts_wds = 0 
-        family_wds = 0 
-        love_wds = 0 
-        crime_wds = 0 
-        travel_wds = 0 
-        food_wds = 0 
-        if x[col]!=x[col]:
-            sex_wds = 0
-        else:
-            text = (x[col].lower())
-            religion_wds = len(religion_re.findall(text))
-            politics_wds = len(politics_re.findall(text))
-            sex_wds = len(sex_re.findall(text))
-            ethno_wds = len(ethno_re.findall(text))
-            econo_wds = len(econo_re.findall(text))
-            health_wds = len(health_re.findall(text))
-            sport_wds = len(sport_re.findall(text))
-            arts_wds = len(arts_re.findall(text))
-            family_wds = len(family_re.findall(text))
-            love_wds = len(love_re.findall(text))
-            crime_wds = len(crime_re.findall(text))
-            travel_wds = len(travel_re.findall(text))
-            food_wds = len(food_re.findall(text))
-        return religion_wds, politics_wds, sex_wds, ethno_wds, econo_wds, health_wds, sport_wds, arts_wds, family_wds, love_wds, crime_wds, travel_wds, food_wds
-
-    df[[ col+'_religion', col+'_politics', col+'_sex', col+'_ethnicity', col+'_economics', col+'_health', col+'_sport', col+'_arts', col+'_family', col+'_love', col+'_crime', col+'_travel', col+'_food']] = df.apply(prof_features, col=col, axis=1, result_type="expand")
-    return df
 
 ########################################################################################
 def add_topic_indicators(df, col):
@@ -166,6 +122,16 @@ def add_topic_indicators(df, col):
     df.loc[(df[col].notnull()) & (df[col].str.contains(travel_pat)), col+'_travel' ]=1
     df[ col+'_food' ]=0
     df.loc[(df[col].notnull()) & (df[col].str.contains(food_pat)), col+'_food' ]=1
+    df[col+'_technology']= 0
+    df.loc[(df[col].notnull()) & (df[col].str.contains(technology_pat)), col+'_technology' ]=1
+    df[col+'_fashion']=0
+    df.loc[(df[col].notnull()) & (df[col].str.contains(fashion_pat)), col+'_fashion' ]=1
+    df[col+'_culture']=0
+    df.loc[(df[col].notnull()) & (df[col].str.contains(culture_pat)), col+'_culture' ]=1
+    df[col+'_education']=0
+    df.loc[(df[col].notnull()) & (df[col].str.contains(education_pat)), col+'_education' ]=1
+    df[col+'_science']=0
+    df.loc[(df[col].notnull()) & (df[col].str.contains(science_pat)), col+'_science' ]=1
 
     return df
 
