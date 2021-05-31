@@ -74,6 +74,8 @@ culture_pat = load_word_pattern('culture.dat', "\\bcultur|")
 
 education_pat = load_word_pattern('education.dat', "\\beducat|")
 
+science_pat = load_word_pattern('science.dat', "\\bscientifi|")
+
 ########################################################################################
 def add_text_topics_features(df, columns, type="flag"):
     """
@@ -190,5 +192,6 @@ def add_topic_counts(df, col):
     df[col+'_fashion']=df[col].str.count(fashion_pat, flags=re.IGNORECASE)
     df[col+'_culture']=df[col].str.count(culture_pat, flags=re.IGNORECASE)
     df[col+'_education']=df[col].str.count(education_pat, flags=re.IGNORECASE)
+    df[col+'_science']=df[col].str.count(science_pat, flags=re.IGNORECASE)
     return df
 
