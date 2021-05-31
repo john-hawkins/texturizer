@@ -60,9 +60,9 @@ def add_text_features(df, col):
             punct = sum(1 for c in x[col] if c in ['.','!','?',':',';','-',','])
             capital_d = capitals/chars
             punct_d = punct/chars
-            word_array = x[col].lower().split('\s+')
-            sentence_array = [ x for x in re.split("[.?]", x[col].lower()) if x]
-            line_array = [ x for x in re.split("[\r\n]+", x[col].lower()) if x]
+            word_array = x[col].lower().split()
+            sentence_array = [ x for x in re.split(r"[.?]", x[col].lower()) if x]
+            line_array = [ x for x in re.split(r"[\r\n]+", x[col].lower()) if x]
             non_stop_words = list(set(word_array) - set(stop_word_list))
             word_count = len(word_array)
             sentence_count = len(sentence_array)

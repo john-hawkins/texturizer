@@ -53,7 +53,7 @@ def add_scarcity(df, col):
         else:
             text = remove_urls_and_tags( remove_escapes_and_non_printable( x[col] ) ).lower()
             text = text.translate(str.maketrans('', '', string.punctuation)).lower()
-            words = text.split('\s+')
+            words = text.split()
             scarcities = list(map(get_scarcity, words))
             mean_scarcity = statistics.mean(scarcities)
             median_scarcity = statistics.median(scarcities)
