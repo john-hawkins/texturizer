@@ -41,7 +41,7 @@ def load_word_list(filename, escape=False):
     rawd = rawd[:-1]
     if escape:
         rawd = re.escape(rawd)
-    word_list = str(rawd).split(r"\n")
+    word_list = str(rawd).split("\n")
     _list = [i for i in word_list if i]
     return _list
 

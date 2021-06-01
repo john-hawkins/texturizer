@@ -139,7 +139,7 @@ def add_topic_indicators(df, col):
 def add_topic_counts(df, col):
     """
         Given a pandas dataframe and a column name.
-        Count the number of keywor matches for each topic
+        Count the number of keyword matches for each topic
     """
     df[col+'_religion']=df[col].str.count(religion_pat, flags=re.IGNORECASE)
     df[col+'_politics']=df[col].str.count(politics_pat, flags=re.IGNORECASE)
