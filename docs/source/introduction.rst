@@ -25,5 +25,8 @@ Transformer for using in machine learning pipelines.
 Limitations
 ***********
 
-- The vast majority of these features are managed via RegEx patterns. This allows you to extend
-  or change the behaviour. But it limits you to preefined features.
+- The majority of the features are achieved via RegEx patterns. This makes the features fast
+  to calculate and easily extensible. But it is a very manual process.
+- Currently the package supports English only. But this could be changed by swapping out
+  the word patterns and dictionaries, and introducing alternative SpacY language models.
+

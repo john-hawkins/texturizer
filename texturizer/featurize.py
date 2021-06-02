@@ -16,6 +16,7 @@ from .literacy import add_text_literacy_features
 from .emoticons import add_text_emoticon_features
 from .comparison import add_comparison_features
 from .scarcity import add_scarcity_features
+from .embedding import add_text_embedding_features
 
 """
     texturizer.featurize: Core functions to apply a set of features to a data frame.
@@ -50,6 +51,10 @@ def process_df(df, params):
         start_profile("emoticons")
         simple = add_text_emoticon_features( simple, params["columns"] )
         end_profile("emoticons")
+    if params["embedding"] :
+        start_profile("embedding")
+        simple = add_text_embedding_features( simple, params["columns"] )
+        end_profile("embedding")
     if params["topics"] :
         start_profile("topics")
         if params["count_matches"] :

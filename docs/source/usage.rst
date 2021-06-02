@@ -32,6 +32,7 @@ Without parameters it will print out an error and the following usage :
      -sentiment Default: False. Words counts for positive and negative sentiment.
      -scarcity Default: False. Word scarcity scores.
      -emoticons Default: False. Emoticon check flags.
+     -embedding Default: False. Normalised Aggregate of Word Embedding Vectors.
      -comparison Default: False. Cross-column comparisons.
 
 

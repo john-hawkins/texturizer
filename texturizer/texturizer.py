@@ -117,6 +117,7 @@ def print_usage(args):
     print("  -sentiment Default: False. Words counts for positive and negative sentiment.")
     print("  -scarcity Default: False. Word scarcity scores.")
     print("  -emoticons Default: False. Emoticon check flags.")
+    print("  -embedding Default: False. Normalised Aggregate of Word Embedding Vectors.")
     print("  -comparison Default: False. Cross-column comparisons.")
     print("")
 

@@ -68,6 +68,7 @@ Each type of feature can be unlocked through the use of a specific command line 
 * -sentiment. Sentiment word counts and score.
 * -scarcity. Word scarcity scores.
 * -emoticons. Emoticon check flags.
+* -embedding. Word embedding vectors from the Spacy Package.
 * -comparison. Cross-column comparisons using edit distance metrics
 
 ## Usage
@@ -78,7 +79,7 @@ Use the runner without installing the application.
 The following example will generate all features on the test data.
 
 ```
-./texturizer-runner.py -columns=question,answer -pos -literacy -traits -rhetoric -profanity -emoticons -sentiment -comparison -topics=count data/test.csv > data/output.csv
+./texturizer-runner.py -columns=question,answer -pos -literacy -traits -rhetoric -profanity -emoticons -embedding -sentiment -scarcity -comparison -topics=count data/test.csv > data/output.csv
 ```
 
 This will send the time performance profile to STDERR as shown below:
@@ -97,8 +98,11 @@ pos                  0:00:22.130724
 literacy             0:00:00.488886
 ```  
 
-As you can see the part of speech (POS) features are the most time 
-consuming to generate. It is worth avoiding them on very large datasets.
+As you can see the part of speech (POS) features and word embeddings
+are the most time consuming to generate. This is because they are both
+using the SpacY package to process the text block.
+
+It is worth avoiding them on very large datasets.
 
 Alternatively, you can invoke the directory as a package:
  
