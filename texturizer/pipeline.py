@@ -64,7 +64,9 @@ class TextTransform(TransformerMixin, BaseEstimator):
               "literacy":False,
               "scarcity":False,
               "comparison":False,
-              "embedding":False
+              "embedding":False,
+              "normalize_embedding":False,
+              "normalize_topics":False,
         }
         if "profanity" in params:
            result["profanity"]=True
@@ -76,8 +78,13 @@ class TextTransform(TransformerMixin, BaseEstimator):
            result["emoticons"]=True
         if "topics" in params:
            result["topics"]=True
-        if "count_matches" in params:
+        if "topics=count" in params:
+           result["topics"]=True
            result["count_matches"]=True
+        if "topics=normalize" in params:
+           result["topics"]=True
+           result["count_matches"]=True
+           result["normalize_topics"]=True
         if "pos" in params:
            result["pos"]=True
         if "traits" in params:
@@ -90,6 +97,9 @@ class TextTransform(TransformerMixin, BaseEstimator):
            result["comparison"]=True
         if "embedding" in params:
            result["embedding"]=True
+        if "embedding=normalize" in params:
+           result["embedding"]=True
+           result["normalize_embedding"]=True
 
         return result
 

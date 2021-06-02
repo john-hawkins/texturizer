@@ -23,17 +23,21 @@ Without parameters it will print out an error and the following usage :
      <PATH TO DATASET> - Supported file types: csv, tsv, xls, xlsx, odf
     [ARGS] In most cases these are switches that turn on the feature type
      -columns=<COMMA SEPARATED LIST>. REQUIRED
-     -topics OR -topics=count. Default: False. Match words from common topics (or count matches).
-     -traits Default: False. Word usage for personality traits.
-     -rhetoric Default: False. Word usage for rhetorical devices.
-     -pos Default: False. Part of speech proportions.
-     -literacy Default: False. Checks for common literacy markers.
-     -profanity Default: False. Profanity check flags.
-     -sentiment Default: False. Words counts for positive and negative sentiment.
-     -scarcity Default: False. Word scarcity scores.
-     -emoticons Default: False. Emoticon check flags.
-     -embedding Default: False. Normalised Aggregate of Word Embedding Vectors.
-     -comparison Default: False. Cross-column comparisons.
+     -topics            Default: False. Indicators for words from common topics.
+     -topics=count                      Count matching words from common topics.
+     -topics=normalize                  Count matching topic key words and normalize over topics.
+     -traits            Default: False. Word usage for personality traits.
+     -rhetoric          Default: False. Word usage for rhetorical devices.
+     -pos               Default: False. Part of speech proportions.
+     -literacy          Default: False. Checks for common literacy markers.
+     -profanity         Default: False. Profanity check flags.
+     -sentiment         Default: False. Words counts for positive and negative sentiment.
+     -scarcity          Default: False. Word scarcity scores.
+     -emoticons         Default: False. Emoticon check flags.
+     -embedding         Default: False. Aggregate of Word Embedding Vectors.
+     -embedding=normalize               Normalised Aggregate of Word Embedding Vectors.
+     -comparison        Default: False. Cross-column comparisons.
+
 
 
 The list of columns to process and the path to the dataset are both mandatory.

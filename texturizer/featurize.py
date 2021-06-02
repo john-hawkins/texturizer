@@ -53,12 +53,18 @@ def process_df(df, params):
         end_profile("emoticons")
     if params["embedding"] :
         start_profile("embedding")
-        simple = add_text_embedding_features( simple, params["columns"] )
+        if params["normalize_embedding"] :
+            simple = add_text_embedding_features( simple, params["columns"], 'normalize' )
+        else:
+            simple = add_text_embedding_features( simple, params["columns"] )
         end_profile("embedding")
     if params["topics"] :
         start_profile("topics")
         if params["count_matches"] :
-            simple = add_text_topics_features( simple, params["columns"], 'count' )
+            if params["normalize_topics"] :
+               simple = add_text_topics_features( simple, params["columns"], 'normalize' )
+            else:
+               simple = add_text_topics_features( simple, params["columns"], 'count' )
         else:
             simple = add_text_topics_features( simple, params["columns"] )
         end_profile("topics")

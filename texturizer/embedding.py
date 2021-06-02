@@ -22,18 +22,18 @@ except:
 """
 
 ########################################################################################
-def add_text_embedding_features(df, columns):
+def add_text_embedding_features(df, columns, type="sum"):
     """
         Given a pandas dataframe and a set of column names.
         calculate the embedding features and add them.
     """
     rez = df.copy()
     for col in columns:
-        rez = add_embedding_features(rez, col)
+        rez = add_embedding_features(rez, col, type)
     return rez
 
 ########################################################################################
-def add_embedding_features(df, col):
+def add_embedding_features(df, col, type):
     """
         Given a pandas dataframe and a column name.
         add features that embed the text content into a semantic space.
@@ -50,7 +50,8 @@ def add_embedding_features(df, col):
             for token in doc:
                vec = vec + token.vector
                index = index + 1
-            vec = vec / index
+            if type=='normalize':
+               vec = vec / index
         return vec.tolist() 
 
     df[ get_vec_column_names(col) ] = df.apply(vec_feats, col=col, axis=1, result_type="expand")

@@ -58,18 +58,22 @@ For string based text comparisons we use [jellyfish](https://pypi.org/project/je
 
 Each type of feature can be unlocked through the use of a specific command line switch:
 
-* -topics. Indicators for presence of words from common topics.
-* -topics=count. Counts of all word matches from common topics.
-* -pos. Part of speech proportions in the text.
-* -literacy. Checks for common literacy markers.
-* -traits. Checks for common stylistic elements or traits that suggest personality type.
-* -rhetoric. Checks for rhetorical devices used for persuasion
-* -profanity. Profanity check flags.
-* -sentiment. Sentiment word counts and score.
-* -scarcity. Word scarcity scores.
-* -emoticons. Emoticon check flags.
-* -embedding. Word embedding vectors from the Spacy Package.
-* -comparison. Cross-column comparisons using edit distance metrics
+```
+     -topics            Default: False. Indicators for words from common topics.
+     -topics=count                      Count matching words from common topics.
+     -topics=normalize                  Count matching topic key words and normalize over topics.
+     -traits            Default: False. Word usage for personality traits.
+     -rhetoric          Default: False. Word usage for rhetorical devices.
+     -pos               Default: False. Part of speech proportions.
+     -literacy          Default: False. Checks for common literacy markers.
+     -profanity         Default: False. Profanity check flags.
+     -sentiment         Default: False. Words counts for positive and negative sentiment.
+     -scarcity          Default: False. Word scarcity scores.
+     -emoticons         Default: False. Emoticon check flags.
+     -embedding         Default: False. Aggregate of Word Embedding Vectors.
+     -embedding=normalize               Normalised Aggregate of Word Embedding Vectors.
+     -comparison        Default: False. Cross-column comparisons.
+```
 
 ## Usage
 

@@ -65,7 +65,9 @@ def get_cmd_line_params(argv):
               "literacy":False, 
               "scarcity":False, 
               "comparison":False, 
-              "embedding":False
+              "embedding":False,
+              "normalize_embedding":False,
+              "normalize_topics":False,
     }
     for o in options:
         parts = o.split("=")
@@ -82,6 +84,9 @@ def get_cmd_line_params(argv):
             if len(parts)>1:
                 if parts[1] == 'count':
                     result["count_matches"]=True
+                if parts[1] == 'normalize':
+                    result["count_matches"]=True
+                    result["normalize_topics"]=True
         if parts[0] == "-traits":
             result["traits"]=True
         if parts[0] == "-rhetoric":
@@ -92,6 +97,9 @@ def get_cmd_line_params(argv):
             result["emoticons"]=True
         if parts[0] == "-embedding":
             result["embedding"]=True
+            if len(parts)>1:
+                if parts[1] == 'normalize':
+                    result["normalize_embedding"]=True
         if parts[0] == "-comparison":
             result["comparison"]=True
         if parts[0] == "-columns":
@@ -108,17 +116,20 @@ def print_usage(args):
     print("  <PATH TO DATASET> - Supported file types: csv, tsv, xls, xlsx, odf")
     print(" [ARGS] In most cases these are switches that turn on the feature type")
     print("  -columns=<COMMA SEPARATED LIST>. REQUIRED")
-    print("  -topics OR -topics=count. Default: False. Match words from common topics (or count matches).")
-    print("  -traits Default: False. Word usage for personality traits.")
-    print("  -rhetoric Default: False. Word usage for rhetorical devices.")
-    print("  -pos Default: False. Part of speech proportions.")
-    print("  -literacy Default: False. Checks for common literacy markers.")
-    print("  -profanity Default: False. Profanity check flags.")
-    print("  -sentiment Default: False. Words counts for positive and negative sentiment.")
-    print("  -scarcity Default: False. Word scarcity scores.")
-    print("  -emoticons Default: False. Emoticon check flags.")
-    print("  -embedding Default: False. Normalised Aggregate of Word Embedding Vectors.")
-    print("  -comparison Default: False. Cross-column comparisons.")
+    print("  -topics            Default: False. Indicators for words from common topics.")
+    print("  -topics=count                      Count matching words from common topics.")
+    print("  -topics=normalize                  Count matching topic key words and normalize over topics.")
+    print("  -traits            Default: False. Word usage for personality traits.")
+    print("  -rhetoric          Default: False. Word usage for rhetorical devices.")
+    print("  -pos               Default: False. Part of speech proportions.")
+    print("  -literacy          Default: False. Checks for common literacy markers.")
+    print("  -profanity         Default: False. Profanity check flags.")
+    print("  -sentiment         Default: False. Words counts for positive and negative sentiment.")
+    print("  -scarcity          Default: False. Word scarcity scores.")
+    print("  -emoticons         Default: False. Emoticon check flags.")
+    print("  -embedding         Default: False. Aggregate of Word Embedding Vectors.")
+    print("  -embedding=normalize               Normalised Aggregate of Word Embedding Vectors.")
+    print("  -comparison        Default: False. Cross-column comparisons.")
     print("")
 
 

@@ -86,6 +86,8 @@ def add_text_topics_features(df, columns, type="flag"):
     for col in columns:
         if type=="count":
             rez = add_topic_counts(rez, col)
+        if type=="normalize":
+            rez = add_topic_counts(rez, col, normalize=True)
         else:
             rez = add_topic_indicators(rez, col)
     return rez
@@ -136,7 +138,7 @@ def add_topic_indicators(df, col):
     return df
 
 ########################################################################################
-def add_topic_counts(df, col):
+def add_topic_counts(df, col, normalize=False):
     """
         Given a pandas dataframe and a column name.
         Count the number of keyword matches for each topic
@@ -159,5 +161,26 @@ def add_topic_counts(df, col):
     df[col+'_culture']=df[col].str.count(culture_pat, flags=re.IGNORECASE)
     df[col+'_education']=df[col].str.count(education_pat, flags=re.IGNORECASE)
     df[col+'_science']=df[col].str.count(science_pat, flags=re.IGNORECASE)
+    if normalize:
+        totals = df[col+'_religion'] + df[col+'_politics'] + df[col+'_sex']+ df[col+'_ethnicity']+ df[col+'_economics']+ df[col+'_health']+ df[col+'_sport']+ df[col+'_arts']+ df[col+'_family']+ df[col+'_love']+ df[col+'_crime']+ df[col+'_travel']+ df[col+'_food']+ df[col+'_technology']+ df[col+'_fashion']+ df[col+'_culture']+ df[col+'_education']+df[col+'_science'] + 1
+        df[col+'_religion']=df[col+'_religion']/totals
+        df[col+'_politics']=df[col+'_politics']/totals
+        df[col+'_sex']=df[col+'_sex']/totals
+        df[col+'_ethnicity']=df[col+'_ethnicity']/totals
+        df[col+'_economics']=df[col+'_economics']/totals
+        df[col+'_health']=df[col+'_health']/totals
+        df[col+'_sport']=df[col+'_sport']/totals
+        df[col+'_arts']=df[col+'_arts']/totals
+        df[col+'_family']=df[col+'_family']/totals
+        df[col+'_love']=df[col+'_love']/totals
+        df[col+'_crime']=df[col+'_crime']/totals
+        df[col+'_travel']=df[col+'_travel']/totals
+        df[col+'_food']=df[col+'_food']/totals
+        df[col+'_technology']=df[col+'_technology']/totals
+        df[col+'_fashion']=df[col+'_fashion']/totals
+        df[col+'_culture']=df[col+'_culture']/totals
+        df[col+'_education']=df[col+'_education']/totals
+        df[col+'_science']=df[col+'_science']/totals
+
     return df
 
