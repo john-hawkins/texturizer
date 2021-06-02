@@ -86,16 +86,18 @@ This will send the time performance profile to STDERR as shown below:
 ```
 Computation Time Profile for each Feature Set
 ---------------------------------------------
-simple               0:00:00.580910
-comparison           0:00:00.490972
-profanity            0:00:00.507172
-sentiment            0:00:03.611817
-emoticons            0:00:00.387556
-topics               0:00:02.778537
-traits               0:00:00.262633
-rhetoric             0:00:02.107620
-pos                  0:00:22.130724
-literacy             0:00:00.488886
+simple               0:00:00.639998
+comparison           0:00:00.492709
+profanity            0:00:00.584252
+sentiment            0:00:03.144435
+scarcity             0:00:00.641485
+emoticons            0:00:00.411252
+embedding            0:00:21.821642
+topics               0:00:03.554538
+traits               0:00:00.619522
+rhetoric             0:00:03.902830
+pos                  0:00:27.074761
+literacy             0:00:01.301165
 ```  
 
 As you can see the part of speech (POS) features and word embeddings
