@@ -12,7 +12,7 @@ from .process import load_word_pattern
     texturizer.traits: Personality trait feature flags
 
     This module performs word or phrase matching to generate features 
-    that can be indicative of personailuty traits in a writer or speaker.
+    that can be indicative of personality traits in a writer or speaker.
 
     Some ideas taken from these articles
 
@@ -22,9 +22,6 @@ from .process import load_word_pattern
 """
 
 ########################################################################################
-
-reasoning_pat = load_word_pattern('reasoning.dat')
-reasoning_re = re.compile(reasoning_pat)
 
 nuance_pat = load_word_pattern('nuance.dat')
 nuance_re = re.compile(nuance_pat)
@@ -57,7 +54,6 @@ def add_trait_counts(df, col):
         Given a pandas dataframe and a column name.
         Count the number of keyword matches for each trait
     """
-    df[col+'_reason']=df[col].str.count(reasoning_pat, flags=re.IGNORECASE)
     df[col+'_explain']=df[col].str.count(explain_pat, flags=re.IGNORECASE)
     df[col+'_nuance']=df[col].str.count(nuance_pat, flags=re.IGNORECASE)
     df[col+'_singular']=df[col].str.count(singular_pat, flags=re.IGNORECASE)

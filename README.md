@@ -45,7 +45,7 @@ Released and distributed via setuptools/PyPI/pip for Python 3.
 
 ### Resources & Dependencies
 
-For Part of Speech Tagging we use [spacy](https://spacy.io/usage/spacy-101)
+For Part of Speech Tagging and Word Embeddings we use [spacy](https://spacy.io/usage/spacy-101)
 
 Note: After install you will need to get spaCy to download the English model.
 ```
@@ -59,56 +59,64 @@ For string based text comparisons we use [jellyfish](https://pypi.org/project/je
 Each type of feature can be unlocked through the use of a specific command line switch:
 
 ```
-     -topics            Default: False. Indicators for words from common topics.
-     -topics=count                      Count matching words from common topics.
-     -topics=normalize                  Count matching topic key words and normalize over topics.
-     -traits            Default: False. Word usage for personality traits.
-     -rhetoric          Default: False. Word usage for rhetorical devices.
-     -pos               Default: False. Part of speech proportions.
-     -literacy          Default: False. Checks for common literacy markers.
-     -profanity         Default: False. Profanity check flags.
-     -sentiment         Default: False. Words counts for positive and negative sentiment.
-     -scarcity          Default: False. Word scarcity scores.
-     -emoticons         Default: False. Emoticon check flags.
-     -embedding         Default: False. Aggregate of Word Embedding Vectors.
-     -embedding=normalize               Normalised Aggregate of Word Embedding Vectors.
-     -comparison        Default: False. Cross-column comparisons.
+  -topics            Default: False. Indicators for words from common topics.
+  -topics=count                      Count matching words from common topics.
+  -topics=normalize                  Count matching topic key words and normalize over topics.
+  -traits            Default: False. Word usage for personality traits.
+  -reason            Default: False. Word usage for reasoning: premises, conclusions.
+  -rhetoric          Default: False. Word usage for rhetorical devices.
+  -pos               Default: False. Part of speech proportions.
+  -literacy          Default: False. Checks for simple literacy markers.
+  -profanity         Default: False. Profanity check flags.
+  -sentiment         Default: False. Words counts for positive and negative sentiment.
+  -scarcity          Default: False. Word scarcity scores.
+  -emoticons         Default: False. Emoticon check flags.
+  -embedding         Default: False. Aggregate of Word Embedding Vectors.
+  -embedding=normalize               Normalised Aggregate of Word Embedding Vectors.
+  -comparison        Default: False. Cross-column comparisons using edit distances.
+
 ```
 
 ## Usage
 
 You can use this application multiple ways
 
+### Runner
+
 Use the runner without installing the application. 
 The following example will generate all features on the test data.
 
 ```
-./texturizer-runner.py -columns=question,answer -pos -literacy -traits -rhetoric -profanity -emoticons -embedding -sentiment -scarcity -comparison -topics=count data/test.csv > data/output.csv
+./texturizer-runner.py -columns=question,answer -pos -literacy -traits -reason -rhetoric -profanity -emoticons -embedding -sentiment -scarcity -comparison -topics=count data/test.csv > data/output.csv
 ```
 
 This will send the time performance profile to STDERR as shown below:
 ```
 Computation Time Profile for each Feature Set
 ---------------------------------------------
-simple               0:00:00.639998
-comparison           0:00:00.492709
-profanity            0:00:00.584252
-sentiment            0:00:03.144435
-scarcity             0:00:00.641485
-emoticons            0:00:00.411252
-embedding            0:00:21.821642
-topics               0:00:03.554538
-traits               0:00:00.619522
-rhetoric             0:00:03.902830
-pos                  0:00:27.074761
-literacy             0:00:01.301165
+simple               0:00:00.498634
+comparison           0:00:00.536637
+profanity            0:00:00.496018
+sentiment            0:00:03.310224
+scarcity             0:00:00.523863
+emoticons            0:00:00.219341
+embedding            0:00:43.456939
+topics               0:00:05.285120
+traits               0:00:00.298902
+reason               0:00:00.305391
+rhetoric             0:00:02.988197
+pos                  0:00:40.981175
+literacy             0:00:00.371007
 ```  
 
 As you can see the part of speech (POS) features and word embeddings
-are the most time consuming to generate. This is because they are both
-using the SpacY package to process the text block.
+are the most time consuming to generate. In both instances these rely on the 
+SpacY package to process the text block. For the moment it would be advised to
+avoid using them on very large datasets.
 
-It is worth avoiding them on very large datasets.
+TODO: improve performance of these feature generators. 
+
+### Directory as package 
 
 Alternatively, you can invoke the directory as a package:
  
@@ -116,7 +124,14 @@ Alternatively, you can invoke the directory as a package:
 python -m texturizer -columns=question,answer data/test.csv > data/output.csv
 ```
 
-Or simply install the package and use the command line application directly
+### From Install
+
+Or you can simply install the package and use the command line application directly
+
+```
+texturizer -h
+```
+Will print out the help
 
 
 # Installation

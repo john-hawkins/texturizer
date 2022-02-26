@@ -19,7 +19,7 @@ by installing it locally:
     python setup.py install
 
 
-Texturizer depends on the following packages:
+The core functions in Texturizer depend on the following packages:
 
 .. code-block:: bash
 
@@ -27,5 +27,12 @@ Texturizer depends on the following packages:
     pandas>=0.25.3
     jellyfish
     textdistance
+    spacy
+    textblob
 
+Some features will also require an installation of the SpacY language file: "en_core_web_sm"
+
+.. code-block:: bash
+
+    sudo python3 -m spacy download en
 

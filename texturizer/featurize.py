@@ -10,6 +10,7 @@ from .pos import add_text_pos_features
 from .topics import add_text_topics_features
 from .profanity import add_text_profanity_features
 from .traits import add_text_trait_features
+from .reason import add_text_reason_features
 from .rhetoric import add_text_rhetoric_features
 from .sentiment import add_text_sentiment_features
 from .literacy import add_text_literacy_features
@@ -72,6 +73,10 @@ def process_df(df, params):
         start_profile("traits")
         simple = add_text_trait_features( simple, params["columns"] )
         end_profile("traits")
+    if params["reason"] :
+        start_profile("reason")
+        simple = add_text_reason_features( simple, params["columns"] )
+        end_profile("reason")
     if params["rhetoric"] :
         start_profile("rhetoric")
         simple = add_text_rhetoric_features( simple, params["columns"] )

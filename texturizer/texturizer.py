@@ -60,6 +60,7 @@ def get_cmd_line_params(argv):
               "topics":False, 
               "count_matches":False, 
               "traits":False, 
+              "reason":False, 
               "rhetoric":False, 
               "pos":False, 
               "literacy":False, 
@@ -89,6 +90,8 @@ def get_cmd_line_params(argv):
                     result["normalize_topics"]=True
         if parts[0] == "-traits":
             result["traits"]=True
+        if parts[0] == "-reason":
+            result["reason"]=True
         if parts[0] == "-rhetoric":
             result["rhetoric"]=True
         if parts[0] == "-pos":
@@ -120,16 +123,17 @@ def print_usage(args):
     print("  -topics=count                      Count matching words from common topics.")
     print("  -topics=normalize                  Count matching topic key words and normalize over topics.")
     print("  -traits            Default: False. Word usage for personality traits.")
+    print("  -reason            Default: False. Word usage for reasoning: premises, conclusions.")
     print("  -rhetoric          Default: False. Word usage for rhetorical devices.")
     print("  -pos               Default: False. Part of speech proportions.")
-    print("  -literacy          Default: False. Checks for common literacy markers.")
+    print("  -literacy          Default: False. Checks for simple literacy markers.")
     print("  -profanity         Default: False. Profanity check flags.")
     print("  -sentiment         Default: False. Words counts for positive and negative sentiment.")
     print("  -scarcity          Default: False. Word scarcity scores.")
     print("  -emoticons         Default: False. Emoticon check flags.")
     print("  -embedding         Default: False. Aggregate of Word Embedding Vectors.")
     print("  -embedding=normalize               Normalised Aggregate of Word Embedding Vectors.")
-    print("  -comparison        Default: False. Cross-column comparisons.")
+    print("  -comparison        Default: False. Cross-column comparisons using edit distances.")
     print("")
 
 

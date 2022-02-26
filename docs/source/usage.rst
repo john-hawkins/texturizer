@@ -27,22 +27,27 @@ Without parameters it will print out an error and the following usage :
      -topics=count                      Count matching words from common topics.
      -topics=normalize                  Count matching topic key words and normalize over topics.
      -traits            Default: False. Word usage for personality traits.
+     -reason            Default: False. Word usage for reasoning: premises, conclusions.
      -rhetoric          Default: False. Word usage for rhetorical devices.
      -pos               Default: False. Part of speech proportions.
-     -literacy          Default: False. Checks for common literacy markers.
+     -literacy          Default: False. Checks for simple literacy markers.
      -profanity         Default: False. Profanity check flags.
      -sentiment         Default: False. Words counts for positive and negative sentiment.
      -scarcity          Default: False. Word scarcity scores.
      -emoticons         Default: False. Emoticon check flags.
      -embedding         Default: False. Aggregate of Word Embedding Vectors.
      -embedding=normalize               Normalised Aggregate of Word Embedding Vectors.
-     -comparison        Default: False. Cross-column comparisons.
-
+     -comparison        Default: False. Cross-column comparisons using edit distances.
 
 
 The list of columns to process and the path to the dataset are both mandatory.
 
 The rest of the options turn on or off particular groups of features.
+
+The package will output a computation time profile for all the feature sets it computes.
+It is worthwhile running it over a sample of your data first to identofy features that may
+be too computationally intensive for your data.
+
 
 Python Package Usage
 ^^^^^^^^^^^^^^^^^^^^
